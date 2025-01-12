@@ -2,3 +2,4 @@
 hiyo desu
 ayu desu
 sio desu
+suzuki desu
