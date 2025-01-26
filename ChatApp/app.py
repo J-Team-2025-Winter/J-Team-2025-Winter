@@ -1,7 +1,11 @@
-from flask import Flask, redirect, session, url_for, render_template
+from flask import Flask, redirect, session, url_for, render_template, request, flash
 from datetime import timedelta
 import os
+import re
 import uuid
+import hashlib
+
+from models import User, Channel
 
 # 定数定義
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -34,12 +38,12 @@ def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
     password = request.form.get('password')
-    passwordConfirmation = request.form.get('password-confirmation')
+    # passwordConfirmation = request.form.get('password-confirmation')
 
-    if name == '' or email =='' or password == '' or passwordConfirmation == '':
+    if name == '' or email =='' or password == '': # or passwordConfirmation == '':
         flash('空のフォームがあるようです')
-    elif password != passwordConfirmation:
-        flash('二つのパスワードの値が違っています')
+    # elif password != passwordConfirmation:
+    #    flash('二つのパスワードの値が違っています')
     elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
@@ -60,3 +64,23 @@ def signup_process():
 @app.route('/login', methods=['GET'])
 def login_view():
     return render_template('auth/login.html')
+
+# ログアウト
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login_view'))
+
+# チャンネル一覧ページの表示
+@app.route('/channels', methods=['GET'])
+def channels_view():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    else:
+        channels = Channel.get_all()
+        channels.reverse()
+        return render_template('channels.html', channels=channels, uid=uid)
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)
