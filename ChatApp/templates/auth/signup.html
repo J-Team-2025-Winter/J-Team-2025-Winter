@@ -15,9 +15,9 @@
         />
       </div>
       <form class="auth-form signup" method="post">
-        <h1 class="auth-title">HI THERE!</h1>
+        <h1 class="auth-title">顧客新規登録</h1>
         <div>
-          <label for="signup-name-input">Name</label>
+          <label for="signup-name-input">名前</label>
           <input
             type="text"
             placeholder="Name"
@@ -34,8 +34,35 @@
             id="signup-email-input"
           />
         </div>
+        <!-- hiyo@49追記箇所（始） -->
         <div>
-          <label for="signup-password-input">Password</label>
+          <label for="signup-phone-input">電話番号</label>
+          <input
+            type="number"
+            placeholder="PhoneNumber"
+            name="phone"
+            id="signup-phone-input"
+          />
+        </div>
+        <div>
+          <label for="signup-gender-male-input">男性</label>
+          <input
+            type="radio"
+            name="gender"
+            id="signup-gender-male-input"
+            value="Male"
+          />
+          <label for="signup-gender-female-input">女性</label>
+          <input
+            type="radio"
+            name="gender"
+            id="signup-gender-female-input"
+            valuse="Female"
+          />
+        </div>
+        <!-- hiyo@49追記箇所（終） -->
+        <div>
+          <label for="signup-password-input">パスワード</label>
           <input
             type="password"
             placeholder="Password"
@@ -43,9 +70,9 @@
             id="signup-password-input"
           />
         </div>
-        <!-- <div>
+        <div>
           <label for="signup-password-confirmation-input">
-            Password Confirmation
+            パスワード（確認）
           </label>
           <input
             type="password"
@@ -53,7 +80,7 @@
             name="password-confirmation"
             id="signup-password-confirmation-input"
           />
-        </div> -->
+        </div>
         <div class="auth-button-container">
           {% with messages = get_flashed_messages() %} {% if messages %}
           <ul class="flashes">

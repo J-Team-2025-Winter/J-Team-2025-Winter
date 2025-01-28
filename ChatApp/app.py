@@ -37,13 +37,15 @@ def signup_view():
 def signup_process():
     name = request.form.get('name')
     email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
     password = request.form.get('password')
-    # passwordConfirmation = request.form.get('password-confirmation')
+    passwordConfirmation = request.form.get('password-confirmation')
 
-    if name == '' or email =='' or password == '': # or passwordConfirmation == '':
+    if name == '' or email =='' or phone == '' or gender == '' or password == '' or passwordConfirmation == '':
         flash('空のフォームがあるようです')
-    # elif password != passwordConfirmation:
-    #    flash('二つのパスワードの値が違っています')
+    elif password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
     elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
@@ -54,16 +56,21 @@ def signup_process():
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(uid, name, email, password)
+            User.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
     return redirect(url_for('signup_process'))
 
-# ログインページの表示
+# ログインページの表示（顧客）
 @app.route('/login', methods=['GET'])
 def login_view():
     return render_template('auth/login.html')
+
+# ログインページの表示（店舗）
+@app.route('/login_staff', methods=['GET'])
+def login_staff_view():
+    return render_template('auth/login_staff.html')
 
 # ログアウト
 @app.route('/logout')

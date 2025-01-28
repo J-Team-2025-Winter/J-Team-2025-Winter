@@ -10,12 +10,12 @@ db_pool = DB.init_db_pool()
 # ユーザークラス
 class User:
    @classmethod
-   def create(cls, uid, name, email, password):
+   def create(cls, uid, name, email, phone, gender, password):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO users (uid, user_name, email, password) VALUES (%s, %s, %s, %s);"
-               cur.execute(sql, (uid, name, email, password,))
+               sql = "INSERT INTO users (uid, CustomerName, Email, Phone, Gender, Password) VALUES (%s, %s, %s, %s, %s, %s);"
+               cur.execute(sql, (uid, name, email, phone, gender, password,))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
