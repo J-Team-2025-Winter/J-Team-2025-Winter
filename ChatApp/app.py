@@ -5,7 +5,7 @@ import re
 import uuid
 import hashlib
 
-from models import User, Channel
+from models import User, Stylist, Channel
 
 # 定数定義
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -27,12 +27,17 @@ def index():
         return redirect(url_for('login_view'))
     return redirect(url_for('channels_view'))
 
-# サインアップページの表示
+# サインアップページの表示(顧客)
 @app.route('/signup', methods=['GET'])
 def signup_view():
     return render_template('auth/signup.html')
 
-# サインアップ処理
+# サインアップページの表示(店舗)
+@app.route('/signup_staff', methods=['GET'])
+def signup_staff_view():
+    return render_template('auth/signup_staff.html')
+
+# サインアップ処理(顧客)
 @app.route('/signup', methods=['POST'])
 def signup_process():
     name = request.form.get('name')
@@ -61,6 +66,36 @@ def signup_process():
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
     return redirect(url_for('signup_process'))
+
+# サインアップ処理(店舗)
+@app.route('/signup_staff', methods=['POST'])
+def signup_staff_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
+    password = request.form.get('password')
+    passwordConfirmation = request.form.get('password-confirmation')
+
+    if name == '' or email =='' or phone == '' or gender == '' or password == '' or passwordConfirmation == '':
+        flash('空のフォームがあるようです')
+    elif password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
+    elif re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = uuid.uuid4()
+        password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+        registered_user = Staff.find_by_email(email)
+
+        if registered_user != None:
+            flash('既に登録されているようです')
+        else:
+            Staff.create(uid, name, email, phone, gender, password)
+            UserId = str(uid)
+            session['uid'] = UserId
+            return redirect(url_for('channels_view'))
+    return redirect(url_for('signup_staff_process'))
 
 # ログインページの表示（顧客）
 @app.route('/login', methods=['GET'])
