@@ -27,6 +27,7 @@ def index():
         return redirect(url_for('login_view'))
     return redirect(url_for('channels_view'))
 
+
 # サインアップページの表示(顧客)
 @app.route('/signup', methods=['GET'])
 def signup_view():
@@ -36,6 +37,7 @@ def signup_view():
 @app.route('/signup_staff', methods=['GET'])
 def signup_staff_view():
     return render_template('auth/signup_staff.html')
+
 
 # サインアップ処理(顧客)
 @app.route('/signup', methods=['POST'])
@@ -86,16 +88,17 @@ def signup_staff_process():
     else:
         uid = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        registered_user = Staff.find_by_email(email)
+        registered_user = Stylist.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            Staff.create(uid, name, email, phone, gender, password)
+            Stylist.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('channels_view'))
     return redirect(url_for('signup_staff_process'))
+
 
 # ログインページの表示（顧客）
 @app.route('/login', methods=['GET'])
@@ -107,11 +110,55 @@ def login_view():
 def login_staff_view():
     return render_template('auth/login_staff.html')
 
+# ログイン処理（顧客）
+@app.route('/login', methods=['POST'])
+def login_process():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if email =='' or password == '':
+        flash('空のフォームがあるようです')
+    else:
+        user = User.find_by_email(email)
+        if user is None:
+            flash('このユーザーは存在しません')
+        else:
+            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            if hashPassword != user["Password"]:
+                flash('パスワードが間違っています！')
+            else:
+                session['uid'] = user["CustomerID"]
+                return redirect(url_for('channels_view'))
+    return redirect(url_for('login_view'))
+
+# ログイン処理（店舗）
+@app.route('/login_staff', methods=['POST'])
+def login_staff_process():
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if email =='' or password == '':
+        flash('空のフォームがあるようです')
+    else:
+        user = Stylist.find_by_email(email)
+        if user is None:
+            flash('このユーザーは存在しません')
+        else:
+            hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
+            if hashPassword != user["Password"]:
+                flash('パスワードが間違っています！')
+            else:
+                session['uid'] = user["StylistID"]
+                return redirect(url_for('channels_view'))
+    return redirect(url_for('login_view'))
+
+
 # ログアウト
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login_view'))
+
 
 # チャンネル一覧ページの表示
 @app.route('/channels', methods=['GET'])
@@ -123,6 +170,23 @@ def channels_view():
         channels = Channel.get_all()
         channels.reverse()
         return render_template('channels.html', channels=channels, uid=uid)
+
+
+# 美容師プロフィール編集ページの表示
+@app.route('/edit_profile', methods=['GET'])
+def edit_profile_view():
+    return render_template('auth/edit_profile.html')
+
+# 美容師プロフィールの登録処理
+@app.route('/edit_profile', methods=['POST'])
+def edit_profile_process():
+    picture = request.form.get('picture')
+    comment = request.form.get('comment')
+
+    uid = session.get('uid')
+    Stylist.edit_profile(uid, picture, comment)
+    return render_template('auth/edit_profile.html')
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
