@@ -61,7 +61,7 @@ class Stylist:
        conn = db_pool.get_conn()
        try:
                with conn.cursor() as cur:
-                   sql = "SELECT * FROM staffs WHERE email=%s;"
+                   sql = "SELECT * FROM stylists WHERE email=%s;"
                    cur.execute(sql, (email,))
                    user = cur.fetchone()
                return user
@@ -70,6 +70,21 @@ class Stylist:
            abort(500)
        finally:
            db_pool.release(conn)
+
+   @classmethod
+   def edit_profile(cls, uid, picture, comment):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "UPDATE stylists SET ProfilePictureURL=%s, Comment=%s WHERE StylistID=%s;"
+               cur.execute(sql, (picture, comment, uid,))
+               conn.commit()
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
 
 # チャンネルクラス
 class Channel:
