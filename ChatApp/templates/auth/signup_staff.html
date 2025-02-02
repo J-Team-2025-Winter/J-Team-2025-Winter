@@ -3,17 +3,7 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
-    <img
-      src="{{ url_for('static',filename='img/auth.png') }}"
-      class="auth-main-pic"
-    />
     <div class="auth-form-wrapper">
-      <div class="auth-logo">
-        <img
-          src="{{ url_for('static',filename='img/plaudern-logo.png') }}"
-          alt="logo"
-        />
-      </div>
       <form class="auth-form signup" method="post">
         <h1 class="auth-title">従業員新規登録</h1>
         <div>
@@ -34,7 +24,6 @@
             id="signup-email-input"
           />
         </div>
-        <!-- hiyo@49追記箇所（始） -->
         <div>
           <label for="signup-phone-input">電話番号</label>
           <input
@@ -60,7 +49,6 @@
             value="Female"
           />
         </div>
-        <!-- hiyo@49追記箇所（終） -->
         <div>
           <label for="signup-password-input">パスワード</label>
           <input
@@ -89,9 +77,9 @@
             {% endfor %}
           </ul>
           {% endif %} {% endwith %}
-          <button class="auth-button pink">SIGN UP</button>
+          <button class="auth-button pink">登録</button>
           <a class="switch-auth-mode" href="{{ url_for('login_staff_view') }}">
-            ログインする
+            戻る
           </a>
         </div>
       </form>

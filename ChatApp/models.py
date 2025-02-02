@@ -108,10 +108,10 @@ class Channel:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM channels;"
+               sql = "SELECT * FROM stylists;"
                cur.execute(sql)
-               channels = cur.fetchall()
-               return channels
+               channels_user = cur.fetchall()
+               return channels_user
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
            abort(500)
