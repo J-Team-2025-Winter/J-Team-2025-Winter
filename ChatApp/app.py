@@ -4,8 +4,10 @@ import os
 import re
 import uuid
 import hashlib
+import calendar
 
 from models import User, Stylist, Channel
+from datetime import datetime
 
 # 定数定義
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -66,7 +68,7 @@ def signup_process():
             User.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
-            return redirect(url_for('channels_view'))
+            return redirect(url_for('main_view'))
     return redirect(url_for('signup_process'))
 
 # サインアップ処理(店舗)
@@ -96,7 +98,7 @@ def signup_staff_process():
             Stylist.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
-            return redirect(url_for('channels_view'))
+            return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('signup_staff_process'))
 
 
@@ -128,7 +130,7 @@ def login_process():
                 flash('パスワードが間違っています！')
             else:
                 session['uid'] = user["CustomerID"]
-                return redirect(url_for('channels_view'))
+                return redirect(url_for('main_view'))
     return redirect(url_for('login_view'))
 
 # ログイン処理（店舗）
@@ -149,7 +151,7 @@ def login_staff_process():
                 flash('パスワードが間違っています！')
             else:
                 session['uid'] = user["StylistID"]
-                return redirect(url_for('channels_view'))
+                return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('login_view'))
 
 
@@ -160,16 +162,22 @@ def logout():
     return redirect(url_for('login_view'))
 
 
+# ユーザーTOPページの表示
+@app.route('/main', methods=['GET'])
+def main_view():
+    return render_template('main.html')
+
+
 # チャンネル一覧ページの表示
-@app.route('/channels', methods=['GET'])
-def channels_view():
+@app.route('/channels_user', methods=['GET'])
+def channels_user_view():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
     else:
-        channels = Channel.get_all()
-        channels.reverse()
-        return render_template('channels.html', channels=channels, uid=uid)
+        channels_user = Channel.get_all()
+        channels_user.reverse()
+        return render_template('channels_user.html', channels_user=channels_user, uid=uid)
 
 
 # 美容師プロフィール編集ページの表示
@@ -180,12 +188,38 @@ def edit_profile_view():
 # 美容師プロフィールの登録処理
 @app.route('/edit_profile', methods=['POST'])
 def edit_profile_process():
-    picture = request.form.get('picture')
+    picture = request.form.get('picture') # 画像のサーバーアップロード×
     comment = request.form.get('comment')
 
     uid = session.get('uid')
     Stylist.edit_profile(uid, picture, comment)
     return render_template('auth/edit_profile.html')
+
+
+# 予約ページの表示
+@app.route('/make_reservation', methods=['GET', 'POST'])
+def make_reservation_view():
+    now = datetime.now()
+    year = now.year
+    month = now.month
+    selected_date = None
+
+    if request.method == 'POST':
+        selected_date = request.form.get('date')
+
+    cal = calendar.HTMLCalendar().formatmonth(year, month)
+    return render_template('make_reservation.html', calendar=cal, selected_date=selected_date)
+
+# 予約確認ページの表示（顧客）
+@app.route('/user_reservation', methods=['GET'])
+def user_reservation_view():
+    return render_template('user_reservation.html')
+
+# 予約確認ページの表示（店舗）
+@app.route('/stylist_reservation', methods=['GET'])
+def stylist_reservation_view():
+    return render_template('stylist_reservation.html')
+
 
 
 if __name__ == '__main__':

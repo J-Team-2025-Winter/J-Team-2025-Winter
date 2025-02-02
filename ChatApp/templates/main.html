@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block title %}
+<title>Main</title>
+{% endblock %} {% block body %}
+<div class="main-container">
+  <div class="main-title">
+    <h1>美容室 白鹿村</h1>
+    <p class="main-title-text">
+      TEL : XXX-XXXX-XXXX<br>
+      ACCESS : 東京都品川区荏原3丁目1-35<br>
+    </p>
+  </div>
+  <div class="main-button-container">
+    <a class="modify-user-information" href="{{ url_for('signup_view') }}">
+      ユーザー情報修正
+    </a><br>
+    <a class="view_stylists_list" href="{{ url_for('channels_user_view') }}">
+      美容師一覧
+    </a><br>
+    <a class="logout" href="{{ url_for('logout') }}">
+      ログアウト
+    </a>
+  </div>
+</div>
+{% endblock %}
