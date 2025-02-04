@@ -46,7 +46,7 @@ CREATE TABLE stylists (
 --     FOREIGN KEY (cid) REFERENCES channels(id) ON DELETE CASCADE
 -- );
 
-INSERT INTO users(CustomerID, CustomerName, Email, Password, Phone, Gender) VALUES('960af84c-dd40-47ff-af23-282b72b7cca8','顧客太郎','test@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '00011112222', 'Male');
-INSERT INTO stylists(StylistID, StoreID, StylistName, Email, Password, Phone, Gender, ProfilePictureURL, Comment) VALUES('960af84c-dd40-47ff-af23-282b72b7cca8', '1', '美容師太郎','test@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '33344445555', 'Female', 'biyoushi-tarou-no-URL', 'ハサミのことなら任せてください');
+INSERT INTO users(CustomerID, CustomerName, Email, Password, Phone, Gender) VALUES('00000000-0000-0000-0000-000000000000','Customer Zero','customerzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '00011112222', 'Male');
+INSERT INTO stylists(StylistID, StoreID, StylistName, Email, Password, Phone, Gender, ProfilePictureURL, Comment) VALUES('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '1', 'Stylist Zero','stylistzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '33344445555', 'Male', 'profile-picture', 'hasami no koto nara omakase kudasai');
 -- INSERT INTO channels(id, uid, name, abstract) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8','ぼっち部屋','テストさんの孤独な部屋です');
 -- INSERT INTO messages(id, uid, cid, message) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8', '1', '誰かかまってください、、')

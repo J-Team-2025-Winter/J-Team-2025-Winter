@@ -27,7 +27,7 @@ def index():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    return redirect(url_for('channels_view'))
+    return redirect(url_for('main_view'))
 
 
 # サインアップページの表示(顧客)
@@ -152,7 +152,7 @@ def login_staff_process():
             else:
                 session['uid'] = user["StylistID"]
                 return redirect(url_for('channels_stylist_view'))
-    return redirect(url_for('login_view'))
+    return redirect(url_for('login_staff_view'))
 
 
 # ログアウト
@@ -168,16 +168,27 @@ def main_view():
     return render_template('main.html')
 
 
-# チャンネル一覧ページの表示
+# チャンネル一覧ページの表示（顧客）
 @app.route('/channels_user', methods=['GET'])
 def channels_user_view():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
     else:
-        channels_user = Channel.get_all()
+        channels_stylist = Channel.get_all_stylists()
+        channels_stylist.reverse()
+        return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
+
+# チャンネル一覧ページの表示（店舗）
+@app.route('/channels_stylist', methods=['GET'])
+def channels_stylist_view():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_staff_view'))
+    else:
+        channels_user = Channel.get_all_users()
         channels_user.reverse()
-        return render_template('channels_user.html', channels_user=channels_user, uid=uid)
+        return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
 
 # 美容師プロフィール編集ページの表示

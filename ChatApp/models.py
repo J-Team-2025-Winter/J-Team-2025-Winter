@@ -102,16 +102,30 @@ class Channel:
 #        finally:
 #            db_pool.release(conn)
 
+   @classmethod
+   def get_all_users(cls):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "SELECT * FROM users;"
+               cur.execute(sql)
+               channels_user = cur.fetchall()
+               return channels_user
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
 
    @classmethod
-   def get_all(cls):
+   def get_all_stylists(cls):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
                sql = "SELECT * FROM stylists;"
                cur.execute(sql)
-               channels_user = cur.fetchall()
-               return channels_user
+               channels_stylist = cur.fetchall()
+               return channels_stylist
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
            abort(500)
