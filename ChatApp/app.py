@@ -206,6 +206,17 @@ def edit_profile_process():
     Stylist.edit_profile(uid, picture, comment)
     return render_template('auth/edit_profile.html')
 
+# 美容師プロフィール画像のアップロード
+@app.route('/upload_file', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        flash('ファイルがありません')
+        return redirect(url_for('edit_profile_view'))
+    file = request.files['file']
+    filename = file.filename
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return redirect(url_for('uploaded_file', filename=filename))    
+
 
 # 予約ページの表示
 @app.route('/make_reservation', methods=['GET', 'POST'])
