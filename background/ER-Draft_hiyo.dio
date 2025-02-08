@@ -1,11 +1,19 @@
 <mxfile host="65bd71144e">
     <diagram id="aVjwUWtB2qX-nXcwe8Gw" name="Page-1">
+<<<<<<< HEAD
         <mxGraphModel dx="760" dy="1582" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+=======
+        <mxGraphModel dx="437" dy="1575" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+>>>>>>> 262fa5b721801ab7766771817069895264896def
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="67" value="Customers" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;rounded=1;" parent="1" vertex="1">
+<<<<<<< HEAD
                     <mxGeometry x="340" y="-999" width="480" height="240" as="geometry"/>
+=======
+                    <mxGeometry x="340" y="-1000" width="480" height="210" as="geometry"/>
+>>>>>>> 262fa5b721801ab7766771817069895264896def
                 </mxCell>
                 <mxCell id="68" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" parent="67" vertex="1">
                     <mxGeometry y="30" width="480" height="30" as="geometry"/>
@@ -379,7 +387,11 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="149" value="Messages" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;rounded=1;" parent="1" vertex="1">
+<<<<<<< HEAD
                     <mxGeometry x="880" y="-780" width="480" height="210" as="geometry"/>
+=======
+                    <mxGeometry x="880" y="-790" width="480" height="270" as="geometry"/>
+>>>>>>> 262fa5b721801ab7766771817069895264896def
                 </mxCell>
                 <mxCell id="150" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" parent="149" vertex="1">
                     <mxGeometry y="30" width="480" height="30" as="geometry"/>
@@ -520,7 +532,11 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="177" value="Reservations" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;rounded=1;" parent="1" vertex="1">
+<<<<<<< HEAD
                     <mxGeometry x="880" y="-530" width="480" height="150" as="geometry"/>
+=======
+                    <mxGeometry x="880" y="-490" width="480" height="150" as="geometry"/>
+>>>>>>> 262fa5b721801ab7766771817069895264896def
                 </mxCell>
                 <mxCell id="178" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" parent="177" vertex="1">
                     <mxGeometry y="30" width="480" height="30" as="geometry"/>
