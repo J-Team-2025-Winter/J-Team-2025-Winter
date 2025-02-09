@@ -199,11 +199,11 @@ def edit_profile_view():
 # 美容師プロフィールの登録処理
 @app.route('/edit_profile', methods=['POST'])
 def edit_profile_process():
-    picture = request.form.get('picture') # 画像のサーバーアップロード×
+    filename = filename
     comment = request.form.get('comment')
 
     uid = session.get('uid')
-    Stylist.edit_profile(uid, picture, comment)
+    Stylist.edit_profile(uid, filename, comment)
     return render_template('auth/edit_profile.html')
 
 # 美容師プロフィール画像のアップロード
@@ -215,7 +215,7 @@ def upload_file():
     file = request.files['file']
     filename = file.filename
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('uploaded_file', filename=filename))    
+    return redirect(url_for('edit_profile_process', filename=filename))
 
 
 # 予約ページの表示
