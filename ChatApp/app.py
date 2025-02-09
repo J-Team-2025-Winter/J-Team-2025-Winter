@@ -6,7 +6,7 @@ import uuid
 import hashlib
 import calendar
 
-from models import User, Stylist, Channel
+from models import Customer, Stylist, Channel
 from datetime import datetime
 
 # 定数定義
@@ -60,12 +60,12 @@ def signup_process():
     else:
         uid = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        registered_user = User.find_by_email(email)
+        registered_user = Customer.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(uid, name, email, phone, gender, password)
+            Customer.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('main_view'))
@@ -121,7 +121,7 @@ def login_process():
     if email =='' or password == '':
         flash('空のフォームがあるようです')
     else:
-        user = User.find_by_email(email)
+        user = Customer.find_by_email(email)
         if user is None:
             flash('このユーザーは存在しません')
         else:
@@ -186,7 +186,7 @@ def channels_stylist_view():
     if uid is None:
         return redirect(url_for('login_staff_view'))
     else:
-        channels_user = Channel.get_all_users()
+        channels_user = Channel.get_all_customers()
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
@@ -196,17 +196,17 @@ def channels_stylist_view():
 def edit_profile_view():
     return render_template('auth/edit_profile.html')
 
+# # 美容師プロフィールの登録処理
+# @app.route('/edit_profile', methods=['POST'])
+# def edit_profile_process():
+#     filename = filename
+#     comment = request.form.get('comment')
+
+#     uid = session.get('uid')
+#     Stylist.edit_profile(uid, filename, comment)
+#     return render_template('auth/edit_profile.html')
+
 # 美容師プロフィールの登録処理
-@app.route('/edit_profile', methods=['POST'])
-def edit_profile_process():
-    filename = filename
-    comment = request.form.get('comment')
-
-    uid = session.get('uid')
-    Stylist.edit_profile(uid, filename, comment)
-    return render_template('auth/edit_profile.html')
-
-# 美容師プロフィール画像のアップロード
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -215,7 +215,12 @@ def upload_file():
     file = request.files['file']
     filename = file.filename
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('edit_profile_process', filename=filename))
+
+    comment = request.form.get('comment')
+
+    uid = session.get('uid')
+    Stylist.edit_profile(uid, filename, comment)
+    return render_template('channels_stylist.html')
 
 
 # 予約ページの表示
