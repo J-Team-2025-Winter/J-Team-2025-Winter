@@ -13,6 +13,7 @@ from datetime import datetime
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 SESSION_DAYS = 30
 
+
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', uuid.uuid4().hex)
 app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
@@ -196,25 +197,16 @@ def channels_stylist_view():
 def edit_profile_view():
     return render_template('auth/edit_profile.html')
 
-# # 美容師プロフィールの登録処理
-# @app.route('/edit_profile', methods=['POST'])
-# def edit_profile_process():
-#     filename = filename
-#     comment = request.form.get('comment')
-
-#     uid = session.get('uid')
-#     Stylist.edit_profile(uid, filename, comment)
-#     return render_template('auth/edit_profile.html')
-
 # 美容師プロフィールの登録処理
-@app.route('/upload_file', methods=['POST'])
-def upload_file():
+@app.route('/edit_profile', methods=['POST'])
+def edit_profile_process():
     if 'file' not in request.files:
         flash('ファイルがありません')
         return redirect(url_for('edit_profile_view'))
     file = request.files['file']
     filename = file.filename
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    app.config['uploads'] = 'uploads'
+    file.save(os.path.join(app.config['uploads'], filename))
 
     comment = request.form.get('comment')
 
