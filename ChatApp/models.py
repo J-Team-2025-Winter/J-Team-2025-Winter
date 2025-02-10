@@ -88,6 +88,8 @@ class Stylist:
 
 # チャンネルクラス
 class Channel:
+
+
 #    @classmethod
 #    def create(cls, uid, new_channel_name, new_channel_description):
 #        conn = db_pool.get_conn()
