@@ -191,6 +191,28 @@ def channels_stylist_view():
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
+#顧客チャンネル一覧後、チャット機能に移行する前の処理
+@app.route('/channels_user', methods=['POST'])
+def create_user_channel():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+
+        #Channel.create(uid, channel_name, channel_description)
+    Channel.create(uid)
+    return redirect(url_for('main_view'))
+
+
+#店舗チャンネル一覧後、チャット機能に移行する前の処理
+@app.route('/channels_stylist', methods=['POST'])
+def create_stylist_channel():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_staff_view'))
+    
+    Channel.create(uid)
+    return redirect(url_for('channels_stylist_view'))
+
 
 # 美容師プロフィール編集ページの表示
 @app.route('/edit_profile', methods=['GET'])

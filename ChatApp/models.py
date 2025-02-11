@@ -88,19 +88,23 @@ class Stylist:
 
 # チャンネルクラス
 class Channel:
-#    @classmethod
-#    def create(cls, uid, new_channel_name, new_channel_description):
-#        conn = db_pool.get_conn()
-#        try:
-#            with conn.cursor() as cur:
-#                sql = "INSERT INTO channels (uid, name, abstract) VALUES (%s, %s, %s);"
-#                cur.execute(sql, (uid, new_channel_name, new_channel_description,))
-#                conn.commit()
-#        except pymysql.Error as e:
-#            print(f'エラーが発生しています：{e}')
-#            abort(500)
-#        finally:
-#            db_pool.release(conn)
+
+
+    @classmethod
+    #app.pyのChannel.create(uid, channel_name, channel_description), cls →カーソルコマンド
+    def create(cls, uid, channel_name, channel_description):
+        #conn = db_pool.get_conn() →データベースに接続
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "INSERT INTO channels (uid, name, abstract) VALUES (%s, %s, %s);"
+                cur.execute(sql, (uid, channel_name, channel_description,))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
 
    @classmethod
    def get_all_customers(cls):
