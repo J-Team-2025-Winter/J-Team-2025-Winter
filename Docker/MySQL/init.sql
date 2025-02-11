@@ -8,7 +8,7 @@ USE chatapp
 GRANT ALL PRIVILEGES ON chatapp.* TO 'testuser';
 
 CREATE TABLE customers (
-    customer_id INT, PRIMARY KEY,
+    customer_id VARCHAR(255) PRIMARY KEY,
     customer_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE customers (
 );
 
 CREATE TABLE stylists (
-    stylist_id INT, PRIMARY KEY,
+    stylist_id VARCHAR(255) PRIMARY KEY,
     store_id INT,
     stylist_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -29,10 +29,10 @@ CREATE TABLE stylists (
 );
 
  CREATE TABLE customers_stylists (
-    --AUTO_INCREMENT→順番に情報が更新されるようにする
+-- AUTO_INCREMENT→順番に情報が更新されるようにする
      customers_stylists_id INT AUTO_INCREMENT PRIMARY KEY,
-     customer_id INT, NOT NULL,
-     stylist_id INT, NOT NULL
+     customer_id VARCHAR(255) NOT NULL,
+     stylist_id VARCHAR(255) NOT NULL
 );
 
 -- CREATE TABLE messages (
