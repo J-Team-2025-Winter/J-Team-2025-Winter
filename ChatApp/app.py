@@ -6,12 +6,13 @@ import uuid
 import hashlib
 import calendar
 
-from models import User, Stylist, Channel
+from models import Customer, Stylist, Channel
 from datetime import datetime
 
 # 定数定義
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 SESSION_DAYS = 30
+
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', uuid.uuid4().hex)
@@ -60,12 +61,12 @@ def signup_process():
     else:
         uid = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        registered_user = User.find_by_email(email)
+        registered_user = Customer.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(uid, name, email, phone, gender, password)
+            Customer.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('main_view'))
@@ -121,7 +122,7 @@ def login_process():
     if email =='' or password == '':
         flash('空のフォームがあるようです')
     else:
-        user = User.find_by_email(email)
+        user = Customer.find_by_email(email)
         if user is None:
             flash('このユーザーは存在しません')
         else:
@@ -186,7 +187,7 @@ def channels_stylist_view():
     if uid is None:
         return redirect(url_for('login_staff_view'))
     else:
-        channels_user = Channel.get_all_users()
+        channels_user = Channel.get_all_customers()
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
@@ -221,12 +222,19 @@ def edit_profile_view():
 # 美容師プロフィールの登録処理
 @app.route('/edit_profile', methods=['POST'])
 def edit_profile_process():
-    picture = request.form.get('picture') # 画像のサーバーアップロード×
+    if 'file' not in request.files:
+        flash('ファイルがありません')
+        return redirect(url_for('edit_profile_view'))
+    file = request.files['file']
+    filename = file.filename
+    app.config['uploads'] = 'uploads'
+    file.save(os.path.join(app.config['uploads'], filename))
+
     comment = request.form.get('comment')
 
     uid = session.get('uid')
-    Stylist.edit_profile(uid, picture, comment)
-    return render_template('auth/edit_profile.html')
+    Stylist.edit_profile(uid, filename, comment)
+    return render_template('channels_stylist.html')
 
 
 # 予約ページの表示

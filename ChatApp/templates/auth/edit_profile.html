@@ -4,14 +4,14 @@
 <div class="auth-wrapper">
   <div class="auth-container">
     <div class="auth-form-wrapper">
-      <form class="auth-form edit_profile" method="post">
+      <form class="auth-form edit_profile" method="post" enctype="multipart/form-data">
         <h1 class="auth-title">プロフィール編集</h1>
         <div>
           <label for="edit_profile-picture-input">写真</label>
           <input
             type="file"
-            placeholder="picture"
-            name="picture"
+            placeholder="file"
+            name="file"
             id="edit_profile-picture-input"
             accept="image/png, image/jpeg"
           />
