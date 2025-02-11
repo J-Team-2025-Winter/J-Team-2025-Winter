@@ -106,8 +106,8 @@ class Channel:
         finally:
             db_pool.release(conn)
 
-   @classmethod
-   def get_all_customers(cls):
+    @classmethod
+    def get_all_customers(cls):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
@@ -121,8 +121,8 @@ class Channel:
        finally:
            db_pool.release(conn)
 
-   @classmethod
-   def get_all_stylists(cls):
+    @classmethod
+    def get_all_stylists(cls):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
