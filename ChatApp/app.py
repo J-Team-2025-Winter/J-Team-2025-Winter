@@ -190,40 +190,27 @@ def channels_stylist_view():
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
-#顧客チャンネルの作成
+#顧客チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_user', methods=['POST'])
 def create_user_channel():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    
-    channel_name = request.form.get('channelTitle')
-    channel = Channel.find_by_name.get(channel_name)
-    if channel == None:
-        channel_description = request.form.get('channelDescription')
-        Channel.create(uid, channel_name, channel_description)
-        return redirect(url_for('main_view'))
-    else:
-        error = '既に同じ名前のチャンネルが存在しています'
-        return render_template('error/error.html', error_message=error)
+
+        #Channel.create(uid, channel_name, channel_description)
+    Channel.create(uid)
+    return redirect(url_for('main_view'))
 
 
-#店舗チャンネルの作成
+#店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist', methods=['POST'])
 def create_stylist_channel():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_staff_view'))
     
-    channel_name = request.form.get('channelTitle')
-    channel = Channel.find_by_name(channel_name)
-    if channel == None:
-        channel_description = request.form.get('channelDescription')
-        Channel.create(uid, channel_name, channel_description)
-        return redirect(url_for('channels_stylist_view'))
-    else:
-        error = '既に同じ名前のチャンネルが存在しています'
-        return render_template('error/error.html', error_message=error)
+    Channel.create(uid)
+    return redirect(url_for('channels_stylist_view'))
 
 
 # 美容師プロフィール編集ページの表示
