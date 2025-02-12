@@ -1,4 +1,4 @@
-from flask import Flask, redirect, session, url_for, render_template, request, flash
+from flask import Flask, redirect, session, url_for, render_template, request, flash, send_from_directory
 from datetime import timedelta
 import os
 import re
@@ -127,10 +127,10 @@ def login_process():
             flash('このユーザーは存在しません')
         else:
             hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            if hashPassword != user["Password"]:
+            if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['uid'] = user["CustomerID"]
+                session['uid'] = user["customer_id"]
                 return redirect(url_for('main_view'))
     return redirect(url_for('login_view'))
 
@@ -148,10 +148,10 @@ def login_staff_process():
             flash('このユーザーは存在しません')
         else:
             hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            if hashPassword != user["Password"]:
+            if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['uid'] = user["StylistID"]
+                session['uid'] = user["stylist_id"]
                 return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('login_staff_view'))
 
@@ -179,6 +179,12 @@ def channels_user_view():
         channels_stylist = Channel.get_all_stylists()
         channels_stylist.reverse()
         return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
+
+
+@app.route('/display_profile/<path:filename>')
+def display_profile_process(filename):
+    return send_from_directory('uploads', filename)
+
 
 # チャンネル一覧ページの表示（店舗）
 @app.route('/channels_stylist', methods=['GET'])
