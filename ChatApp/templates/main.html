@@ -1,16 +1,57 @@
 {% extends 'base.html' %} {% block title %}
 <title>Main</title>
+<link rel="stylesheet" href="static\css\main_customer.css">
 {% endblock %} {% block body %}
 <div class="main-container">
   <div class="main-title">
     <h1>J Team</h1>
-    <p class="main-title-text">
+    <p class="main-title-text"></p>
+
+    <img src="static\img\Top.jpg" alt="ページを表示できません">
+
       <h2>Access</h2>
-      ADress<br>
-      東京都品川区荏原3丁目1-35<br>
-      TEL<br>
-      XXX-XXXX-XXXX<br>
-          </p>
+      <dl>
+      <dt>Adress</dt>
+      <dd>東京都品川区荏原3丁目1-35</dd>
+      
+      <dt>TEL</dt>
+      <dd>XXX-XXXX-XXXX</dd>
+
+      <dt>営業時間</dt>
+      <dd>月-金 9:00-20:00</dd>
+      </dl>
+          
+       <h2>Menu</h2>
+       <h3>CUT</h3>
+       <p>カット  ￥5000<br>シャンプー・ブロー込み</p>
+       <p>スクールカット  ￥3000<br>高校生以下</p>
+
+       <h3>COLOR</h3>
+       <p>ハーブカラー（フル）  要問合せ</p>
+       <p>クオルシアカラーに変更             +￥2000</p>
+       <p>オーガニックカラーに変更           +￥3500</p>
+   
+       <p>ハーブカラー（リタッチ）  ￥3000</hp>
+       <p>クオルシアカラーに変更             +￥2000</p>
+       <p>オーガニックカラーに変更           +￥3500</p>
+   
+       <p>イヤリングカラー          ￥4500</p>
+       <p>S/B ロング料金なし</p>
+
+       <p>ケアブリーチ＆カラー          ￥11000</p>
+       <p>S/B ロング料金なし</p>
+
+       <p>インナーカラー         ￥4500</p>
+       <p>S/B ロング料金なし</p>
+
+       <h3>PARMA</h3>
+       <p>パーマ         ￥8000</p>
+       <p>デジタルパーマ             ￥12000</p>
+       <p>デジタルパーマ             ￥5000</p>
+       <p>ストレートパーマ             ￥7000</p>
+       
+       
+
   </div>
   <div class="main-button-container">
     <a class="modify-user-information" href="{{ url_for('signup_view') }}">
