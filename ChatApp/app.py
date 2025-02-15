@@ -1,4 +1,4 @@
-from flask import Flask, redirect, session, url_for, render_template, request, flash
+from flask import Flask, redirect, session, url_for, render_template, request, flash, send_from_directory
 from datetime import timedelta
 import os
 import re
@@ -6,12 +6,13 @@ import uuid
 import hashlib
 import calendar
 
-from models import User, Stylist, Channel
+from models import Customer, Stylist, Channel
 from datetime import datetime
 
 # 定数定義
 EMAIL_PATTERN = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 SESSION_DAYS = 30
+
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', uuid.uuid4().hex)
@@ -60,12 +61,12 @@ def signup_process():
     else:
         uid = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
-        registered_user = User.find_by_email(email)
+        registered_user = Customer.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            User.create(uid, name, email, phone, gender, password)
+            Customer.create(uid, name, email, phone, gender, password)
             UserId = str(uid)
             session['uid'] = UserId
             return redirect(url_for('main_view'))
@@ -121,15 +122,15 @@ def login_process():
     if email =='' or password == '':
         flash('空のフォームがあるようです')
     else:
-        user = User.find_by_email(email)
+        user = Customer.find_by_email(email)
         if user is None:
             flash('このユーザーは存在しません')
         else:
             hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            if hashPassword != user["Password"]:
+            if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['uid'] = user["CustomerID"]
+                session['uid'] = user["customer_id"]
                 return redirect(url_for('main_view'))
     return redirect(url_for('login_view'))
 
@@ -147,10 +148,10 @@ def login_staff_process():
             flash('このユーザーは存在しません')
         else:
             hashPassword = hashlib.sha256(password.encode('utf-8')).hexdigest()
-            if hashPassword != user["Password"]:
+            if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['uid'] = user["StylistID"]
+                session['uid'] = user["stylist_id"]
                 return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('login_staff_view'))
 
@@ -179,6 +180,12 @@ def channels_user_view():
         channels_stylist.reverse()
         return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
 
+
+@app.route('/display_profile/<path:filename>')
+def display_profile_process(filename):
+    return send_from_directory('uploads', filename)
+
+
 # チャンネル一覧ページの表示（店舗）
 @app.route('/channels_stylist', methods=['GET'])
 def channels_stylist_view():
@@ -186,9 +193,31 @@ def channels_stylist_view():
     if uid is None:
         return redirect(url_for('login_staff_view'))
     else:
-        channels_user = Channel.get_all_users()
+        channels_user = Channel.get_all_customers()
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
+
+#顧客チャンネル一覧後、チャット機能に移行する前の処理
+@app.route('/channels_user', methods=['POST'])
+def create_user_channel():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+
+        #Channel.create(uid, channel_name, channel_description)
+    Channel.create(uid)
+    return redirect(url_for('main_view'))
+
+
+#店舗チャンネル一覧後、チャット機能に移行する前の処理
+@app.route('/channels_stylist', methods=['POST'])
+def create_stylist_channel():
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_staff_view'))
+    
+    Channel.create(uid)
+    return redirect(url_for('channels_stylist_view'))
 
 
 # 美容師プロフィール編集ページの表示
@@ -199,23 +228,19 @@ def edit_profile_view():
 # 美容師プロフィールの登録処理
 @app.route('/edit_profile', methods=['POST'])
 def edit_profile_process():
-    filename = filename
-    comment = request.form.get('comment')
-
-    uid = session.get('uid')
-    Stylist.edit_profile(uid, filename, comment)
-    return render_template('auth/edit_profile.html')
-
-# 美容師プロフィール画像のアップロード
-@app.route('/upload_file', methods=['POST'])
-def upload_file():
     if 'file' not in request.files:
         flash('ファイルがありません')
         return redirect(url_for('edit_profile_view'))
     file = request.files['file']
     filename = file.filename
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    return redirect(url_for('edit_profile_process', filename=filename))
+    app.config['uploads'] = 'uploads'
+    file.save(os.path.join(app.config['uploads'], filename))
+
+    comment = request.form.get('comment')
+
+    uid = session.get('uid')
+    Stylist.edit_profile(uid, filename, comment)
+    return render_template('channels_stylist.html')
 
 
 # 予約ページの表示

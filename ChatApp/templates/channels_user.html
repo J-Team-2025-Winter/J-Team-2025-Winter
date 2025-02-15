@@ -6,9 +6,9 @@
     <h1>Stylists</h1>
       {% for stylists in channels_stylist %}
         <p>
-          {{ stylists.StylistName }}<br>
-          {{ stylists.ProfilePictureURL }}<br>
-          {{ stylists.Comment }}<br>
+          {{ stylists.stylist_name }}<br>
+          <img src="{{ url_for('display_profile_process', filename=stylists.profile_picture_url) }}" alt="Profile_Picture"><br>
+          {{ stylists.comment }}<br>
         </p>
       {% endfor %}
   </div>

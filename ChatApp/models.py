@@ -7,14 +7,14 @@ from util.DB import DB
 db_pool = DB.init_db_pool()
 
 
-# ユーザークラス
-class User:
+# 顧客クラス
+class Customer:
    @classmethod
    def create(cls, uid, name, email, phone, gender, password):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO users (CustomerID, CustomerName, Email, Phone, Gender, Password) VALUES (%s, %s, %s, %s, %s, %s);"
+               sql = "INSERT INTO customers (customer_id, customer_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
                cur.execute(sql, (uid, name, email, phone, gender, password,))
                conn.commit()
        except pymysql.Error as e:
@@ -29,7 +29,7 @@ class User:
        conn = db_pool.get_conn()
        try:
                with conn.cursor() as cur:
-                   sql = "SELECT * FROM users WHERE email=%s;"
+                   sql = "SELECT * FROM customers WHERE email=%s;"
                    cur.execute(sql, (email,))
                    user = cur.fetchone()
                return user
@@ -46,7 +46,7 @@ class Stylist:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO stylists (StylistID, StylistName, Email, Phone, Gender, Password) VALUES (%s, %s, %s, %s, %s, %s);"
+               sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
                cur.execute(sql, (uid, name, email, phone, gender, password,))
                conn.commit()
        except pymysql.Error as e:
@@ -76,7 +76,7 @@ class Stylist:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "UPDATE stylists SET ProfilePictureURL=%s, Comment=%s WHERE StylistID=%s;"
+               sql = "UPDATE stylists SET profile_picture_url=%s, comment=%s WHERE stylist_id=%s;"
                cur.execute(sql, (filename, comment, uid,))
                conn.commit()
        except pymysql.Error as e:
@@ -88,26 +88,30 @@ class Stylist:
 
 # チャンネルクラス
 class Channel:
-#    @classmethod
-#    def create(cls, uid, new_channel_name, new_channel_description):
-#        conn = db_pool.get_conn()
-#        try:
-#            with conn.cursor() as cur:
-#                sql = "INSERT INTO channels (uid, name, abstract) VALUES (%s, %s, %s);"
-#                cur.execute(sql, (uid, new_channel_name, new_channel_description,))
-#                conn.commit()
-#        except pymysql.Error as e:
-#            print(f'エラーが発生しています：{e}')
-#            abort(500)
-#        finally:
-#            db_pool.release(conn)
 
-   @classmethod
-   def get_all_users(cls):
+
+    @classmethod
+    #app.pyのChannel.create(uid, channel_name, channel_description), cls →カーソルコマンド
+    def create(cls, uid, channel_name, channel_description):
+        #conn = db_pool.get_conn() →データベースに接続
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "INSERT INTO channels (uid, name, abstract) VALUES (%s, %s, %s);"
+                cur.execute(sql, (uid, channel_name, channel_description,))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def get_all_customers(cls):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM users;"
+               sql = "SELECT * FROM customers;"
                cur.execute(sql)
                channels_user = cur.fetchall()
                return channels_user
@@ -117,8 +121,8 @@ class Channel:
        finally:
            db_pool.release(conn)
 
-   @classmethod
-   def get_all_stylists(cls):
+    @classmethod
+    def get_all_stylists(cls):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
