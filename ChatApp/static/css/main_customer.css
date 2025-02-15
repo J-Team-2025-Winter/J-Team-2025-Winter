@@ -1,0 +1,10 @@
+h1{
+    font-size:32px;
+    color:#3D3D3D;
+    background-color:#FAFAFA;}
+
+/*　以下でボタンを押下したら色が変わるJavascriptを入れたい。
+/*.main-button-container a.active {
+/*       background-color: #f0f0f0; /* アクティブなリンクの背景色 */
+/*       color: #000; /* アクティブなリンクの文字色 */
+/*      }
