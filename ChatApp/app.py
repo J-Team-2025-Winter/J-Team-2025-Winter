@@ -6,7 +6,7 @@ import uuid
 import hashlib
 import calendar
 
-from models import Customer, Stylist, Channel
+from models import Customer, Stylist, Channel, Message
 from datetime import datetime
 
 # 定数定義
@@ -198,26 +198,80 @@ def channels_stylist_view():
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
 #顧客チャンネル一覧後、チャット機能に移行する前の処理
-@app.route('/channels_user', methods=['POST'])
-def create_user_channel():
+#@app.route('/channels_user', methods=['POST'])
+#def create_user_channel():
+#    uid = session.get('uid')
+#    if uid is None:
+#        return redirect(url_for('login_view'))
+#
+#        #Channel.create(uid, channel_name, channel_description)
+#    Channel.create(uid)
+#    return redirect(url_for('main_view'))
+
+#店舗チャンネル一覧後、チャット機能に移行する前の処理
+#@app.route('/channels_stylist', methods=['POST'])
+#def create_stylist_channel():
+#    uid = session.get('uid')
+#    if uid is None:
+#        return redirect(url_for('login_staff_view'))
+#    
+#    Channel.create(uid)
+#    return redirect(url_for('channels_stylist_view'))
+
+#顧客チャンネル一覧後、チャット機能に移行する前の処理
+@app.route('/channels_user/<cid>/messages', methods=['GET'])
+def detail_user_channel(cid):
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
 
         #Channel.create(uid, channel_name, channel_description)
-    Channel.create(uid)
-    return redirect(url_for('main_view'))
+    channel = Channel.find_by_cid(cid)
+    messages = Message.get_all(cid)
 
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
-@app.route('/channels_stylist', methods=['POST'])
-def create_stylist_channel():
+@app.route('/channels_stylist/<cid>/messages', methods=['GET'])
+def detail_stylist_channel(cid):
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_staff_view'))
     
-    Channel.create(uid)
-    return redirect(url_for('channels_stylist_view'))
+    channel = Channel.find_by_cid(cid)
+    messages = Message.get_all(cid)
+
+    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+
+
+
+#顧客側メッセージの投稿
+@app.route('/channels_user/<cid>/messages', methods=['POST'])
+def create_user_message(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+    
+    message = request.form.get('message')
+
+    if message:
+        Message.create(uid, cid, message)
+
+    return redirect('/channels/{cid}/messages'.format(cid = cid))
+
+#店舗側/美容師側メッセージの投稿
+@app.route('/channels_stylist/<cid>/messages',methods=['POST'])
+def create_stylist_messages(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('channels_stylist_view'))
+    
+    message = request.form.get('message')
+
+    if message:
+        Message.create(uid, cid, message)
+
+    return redirect('/channels_stylist/{cid}/messages'.format(cid = cid))
 
 
 # 美容師プロフィール編集ページの表示
