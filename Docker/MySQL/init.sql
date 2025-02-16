@@ -39,11 +39,9 @@ CREATE TABLE stylists (
      message_id INT AUTO_INCREMENT PRIMARY KEY,
      content VARCHAR(255) NOT NULL,
      image_url INT NOT NULL,
-     sent_at DATETIME NOT NULL,
-     reservation_id TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-     customers_stylists_id,
-     FOREIGN KEY (uid) REFERENCES users(uid) ON DELETE CASCADE,
-     FOREIGN KEY (cid) REFERENCES channels(id) ON DELETE CASCADE
+     sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     reservation_id INT,
+     customers_stylists_id INT
  );
 --CREATE TABLE Messages (
 --     id INT AUTO_INCREMENT PRIMARY KEY,
