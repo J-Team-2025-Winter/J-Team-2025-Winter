@@ -89,16 +89,15 @@ class Stylist:
 # チャンネルクラス
 class Channel:
 
-
     @classmethod
     #app.pyのChannel.create(uid, channel_name, channel_description), cls →カーソルコマンド
-    def create(cls, uid, channel_name, channel_description):
+    def create(cls, customer_id, stylist_id):
         #conn = db_pool.get_conn() →データベースに接続
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "INSERT INTO channels (uid, name, abstract) VALUES (%s, %s, %s);"
-                cur.execute(sql, (uid, channel_name, channel_description,))
+                sql = "INSERT INTO customers_stylists (customer_id, stylist_id) VALUES (%s, %s);"
+                cur.execute(sql, (customer_id, stylist_id,))
                 conn.commit()
         except pymysql.Error as e:
             print(f'エラーが発生しています：{e}')
@@ -137,20 +136,20 @@ class Channel:
            db_pool.release(conn)
 
 
-#    @classmethod
-#    def find_by_cid(cls, cid):
-#        conn = db_pool.get_conn()
-#        try:
-#            with conn.cursor() as cur:
-#                sql = "SELECT * FROM channels WHERE id=%s;"
-#                cur.execute(sql, (cid,))
-#                channel = cur.fetchone()
-#                return channel
-#        except pymysql.Error as e:
-#            print(f'エラーが発生しています：{e}')
-#            abort(500)
-#        finally:
-#            db_pool.release(conn)
+    @classmethod
+    def find_by_cid(cls, cid):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                sql = "SELECT * FROM customers_stylists WHERE customers_stylists_id=%s;"
+                cur.execute(sql, (cid,))
+                channel = cur.fetchone()
+                return channel
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
 
 
 #    @classmethod
@@ -216,26 +215,26 @@ class Message:
            db_pool.release(conn)
 
 
-#    @classmethod
-#    def get_all(cls, cid):
-#        conn = db_pool.get_conn()
-#        try:
-#            with conn.cursor() as cur:
-#                sql = """
-#                    SELECT id, u.uid, user_name, message 
-#                    FROM messages AS m 
-#                    INNER JOIN users AS u ON m.uid = u.uid 
-#                    WHERE cid = %s 
-#                    ORDER BY id ASC;
-#                """
-#                cur.execute(sql, (cid,))
-#                messages = cur.fetchall()
-#                return messages
-#        except pymysql.Error as e:
-#            print(f'エラーが発生しています：{e}')
-#            abort(500)
-#        finally:
-#            db_pool.release(conn)
+   @classmethod
+   def get_all(cls, cid):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = """
+                   SELECT id, u.uid, user_name, message 
+                   FROM messages AS m 
+                   INNER JOIN users AS u ON m.uid = u.uid 
+                   WHERE cid = %s 
+                   ORDER BY id ASC;
+               """
+               cur.execute(sql, (cid,))
+               messages = cur.fetchall()
+               return messages
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
 
 
 #    @classmethod
