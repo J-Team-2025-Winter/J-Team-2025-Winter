@@ -9,10 +9,6 @@
     flex-direction:column;
     background-color: var(--navy_blue);    
 }
-.auth-container{
-    background-color:#213555;
-}
 body {
     font-family: 'Noto Sans JP', sans-serif;
 }
-.auth-title{color:var(--navy_blue);margin-bottom:0;margin:0;font-weight:900;font-size:48px;z-index:100;margin-bottom:2rem}

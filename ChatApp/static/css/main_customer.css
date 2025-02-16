@@ -1,14 +1,26 @@
+.main-container{
+    width:100vw;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color: var(--navy_blue);
+}
 h1{
     font-size:32px;
-    color:#3D3D3D;
-    background-color:var(--navy_blue);
+    color:var(--black);
+    background-color:var(--white_1);
+    padding:10px;
 }
 
+.main-title{
+
+}
 
 :root{
     --navy_blue:#213555;
     --white_1:#FAFAFA;
-    --white_2:
+    --black:#3D3D3D;
 }
 
 /*　以下でボタンを押下したら色が変わるJavascriptを入れたい。

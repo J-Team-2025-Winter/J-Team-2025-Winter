@@ -3,14 +3,16 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
+    <h1 class="auth-title">
+      SIGN UP<span class="sub-title"> 新規ユーザー登録</span>
+    </h1>
     <div class="auth-form-wrapper">
       <form class="auth-form signup" method="post">
-        <h1 class="auth-title">SIGN UP<span class="sub-title">新規ユーザー登録</span></h1>
-        <div>
+       <div>
           <label for="signup-name-input">Name</label>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="名前"
             name="name"
             id="signup-name-input"
           />
@@ -55,7 +57,7 @@
           </label>
           <input
             type="password"
-            placeholder="Password Confirmation"
+            placeholder="password"
             name="password-confirmation"
             id="signup-password-confirmation-input"
           />
@@ -70,8 +72,4 @@
     </div>
   </div>
 </div>
-<img
-src="{url_for('static',filename='img/icon.png')}"
-alt="snipsnap-logo"
-/>
 {% endblock %}
