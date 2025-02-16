@@ -5,9 +5,9 @@
   <div class="auth-container">
     <div class="auth-form-wrapper">
       <form class="auth-form signup" method="post">
-        <h1 class="auth-title">顧客新規登録</h1>
+        <h1 class="auth-title">SIGN UP<span class="sub-title">新規ユーザー登録</span></h1>
         <div>
-          <label for="signup-name-input">名前</label>
+          <label for="signup-name-input">Name</label>
           <input
             type="text"
             placeholder="Name"
@@ -16,7 +16,7 @@
           />
         </div>
         <div>
-          <label for="signup-email-input">Email</label>
+          <label for="signup-email-input">Mail Address</label>
           <input
             type="text"
             placeholder="Email"
@@ -25,7 +25,7 @@
           />
         </div>
         <div>
-          <label for="signup-phone-input">電話番号</label>
+          <label for="signup-phone-input">TEL</label>
           <input
             type="number"
             placeholder="PhoneNumber"
@@ -34,23 +34,14 @@
           />
         </div>
         <div>
-          <label for="signup-gender-male-input">男性</label>
-          <input
-            type="radio"
-            name="gender"
-            id="signup-gender-male-input"
-            value="Male"
-          />
-          <label for="signup-gender-female-input">女性</label>
-          <input
-            type="radio"
-            name="gender"
-            id="signup-gender-female-input"
-            value="Female"
-          />
+          <label for="signup-gender">Gender</label>
+          <select id ="signup-gender" name="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
         </div>
         <div>
-          <label for="signup-password-input">パスワード</label>
+          <label for="signup-password-input">Password</label>
           <input
             type="password"
             placeholder="Password"
@@ -60,7 +51,7 @@
         </div>
         <div>
           <label for="signup-password-confirmation-input">
-            パスワード（確認）
+            Password（確認）
           </label>
           <input
             type="password"
@@ -79,4 +70,8 @@
     </div>
   </div>
 </div>
+<img
+src="{url_for('static',filename='img/icon.png')}"
+alt="snipsnap-logo"
+/>
 {% endblock %}

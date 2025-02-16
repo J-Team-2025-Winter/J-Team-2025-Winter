@@ -1,7 +1,15 @@
 h1{
     font-size:32px;
     color:#3D3D3D;
-    background-color:#FAFAFA;}
+    background-color:var(--navy_blue);
+}
+
+
+:root{
+    --navy_blue:#213555;
+    --white_1:#FAFAFA;
+    --white_2:
+}
 
 /*　以下でボタンを押下したら色が変わるJavascriptを入れたい。
 /*.main-button-container a.active {
