@@ -219,17 +219,18 @@ def channels_stylist_view():
 #    return redirect(url_for('channels_stylist_view'))
 
 #顧客チャンネル一覧後、チャット機能に移行する前の処理
-@app.route('/channels_user/<cid>/messages', methods=['GET'])
+@app.route('/channels_user/<cid>/messages', methods=['GET'])#cid→sid(stylist_id), 1.customer_stylistのレコードを作成 2.GETメソッドでメッセージを表示
 def detail_user_channel(cid):
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
 
         #Channel.create(uid, channel_name, channel_description)
-    channel = Channel.find_by_cid(cid)
+    #channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
 
-    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+    #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+    return render_template('messages.html', messages=messages, uid=uid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<cid>/messages', methods=['GET'])
@@ -238,10 +239,11 @@ def detail_stylist_channel(cid):
     if uid is None:
         return redirect(url_for('login_staff_view'))
     
-    channel = Channel.find_by_cid(cid)
+    #channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
 
-    return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+    #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
+    return render_template('messages.html', messages=messages, uid=uid)
 
 
 
