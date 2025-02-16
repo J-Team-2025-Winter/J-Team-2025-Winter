@@ -59,15 +59,16 @@ def signup_process():
     elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
-        uid = uuid.uuid4()
+        customer_id = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
         registered_user = Customer.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            Customer.create(uid, name, email, phone, gender, password)
-            UserId = str(uid)
+            Customer.create(customer_id, name, email, phone, gender, password)
+            Channel.Create_customers_stylists(customer_id)
+            UserId = str(customer_id)
             session['uid'] = UserId
             return redirect(url_for('main_view'))
     return redirect(url_for('signup_process'))
@@ -89,15 +90,16 @@ def signup_staff_process():
     elif re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
-        uid = uuid.uuid4()
+        stylist_id = uuid.uuid4()
         password = hashlib.sha256(password.encode('utf-8')).hexdigest()
         registered_user = Stylist.find_by_email(email)
 
         if registered_user != None:
             flash('既に登録されているようです')
         else:
-            Stylist.create(uid, name, email, phone, gender, password)
-            UserId = str(uid)
+            Stylist.create(stylist_id, name, email, phone, gender, password)
+            Channel.Create_stylists_customers(stylist_id)
+            UserId = str(stylist_id)
             session['uid'] = UserId
             return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('signup_staff_process'))
@@ -176,7 +178,7 @@ def channels_user_view():
     if uid is None:
         return redirect(url_for('login_view'))
     else:
-        channels_stylist = Channel.get_all_stylists()
+        channels_stylist = Channel.get_all_stylists() #cid渡す
         channels_stylist.reverse()
         return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
 
