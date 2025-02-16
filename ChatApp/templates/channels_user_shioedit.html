@@ -4,14 +4,20 @@
 <div class="main-container">
   <div class="channels_user-title">
     <h1>Stylists</h1>
-      {% for stylists in channels_stylist %}
-        <p>
-          {{ url_for('detail_user_channel', cid=stylists.stylist_id) }}
-          {{ stylists.stylist_name }}<br>
+    <ul class="stylist-list">
+      {% for stylist in channels_stylist %}
+      <li class="stylist-item">
+        <!--スタイリストの名前をクリックするとチャットページに遷移する-->
+        <a href="{{url_for('chat_view',stylist_id=stylist.id)}}" class="stylist-name">
+          {{ Stylists.stylist_name }}
+        </a>
+      <br>
           <img src="{{ url_for('display_profile_process', filename=stylists.profile_picture_url) }}" alt="Profile_Picture"><br>
-          {{ stylists.comment }}<br>
+          {{ stylist.comment }}<br>
         </p>
+      </li>
       {% endfor %}
+    </ul>
   </div>
   <div class="channels_user-button-container">
     <a class="back-to-main" href="{{ url_for('main_view') }}">

@@ -10,12 +10,12 @@ db_pool = DB.init_db_pool()
 # 顧客クラス
 class Customer:
    @classmethod
-   def create(cls, uid, name, email, phone, gender, password):
+   def create(cls, customer_id, name, email, phone, gender, password):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
                sql = "INSERT INTO customers (customer_id, customer_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
-               cur.execute(sql, (uid, name, email, phone, gender, password,))
+               cur.execute(sql, (customer_id, name, email, phone, gender, password,))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
@@ -42,12 +42,12 @@ class Customer:
 # 美容師クラス
 class Stylist:
    @classmethod
-   def create(cls, uid, name, email, phone, gender, password):
+   def create(cls, stylist_id, name, email, phone, gender, password):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
                sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
-               cur.execute(sql, (uid, name, email, phone, gender, password,))
+               cur.execute(sql, (stylist_id, name, email, phone, gender, password,))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
@@ -88,6 +88,43 @@ class Stylist:
 
 # チャンネルクラス
 class Channel:
+    @classmethod
+    def Create_customers_stylists(cls, customer_id):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                # すべてのstylist_idを取得
+                cur.execute("SELECT stylist_id FROM stylists;")
+                stylist_ids = cur.fetchall()
+                # customer_idとstylist_idを紐づける
+                sql = "INSERT INTO customers_stylists (customer_id, stylist_id) VALUES (%s, %s);"
+                for stylist in stylist_ids:
+                    cur.execute(sql, (customer_id, stylist['stylist_id'],))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
+
+    @classmethod
+    def Create_stylists_customers(cls, stylist_id):
+        conn = db_pool.get_conn()
+        try:
+            with conn.cursor() as cur:
+                # すべてのcustomer_idを取得
+                cur.execute("SELECT customer_id FROM customers;")
+                customer_ids = cur.fetchall()
+                # customer_idとstylist_idを紐づける
+                sql = "INSERT INTO customers_stylists (customer_id, stylist_id) VALUES (%s, %s);"
+                for customer in customer_ids:
+                    cur.execute(sql, (customer['customer_id'], stylist_id,))
+                conn.commit()
+        except pymysql.Error as e:
+            print(f'エラーが発生しています：{e}')
+            abort(500)
+        finally:
+            db_pool.release(conn)
 
     @classmethod
     #app.pyのChannel.create(uid, channel_name, channel_description), cls →カーソルコマンド
