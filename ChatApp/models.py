@@ -242,7 +242,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO messages(uid, cid, message) VALUES(%s, %s, %s)"
+               sql = "INSERT INTO Messages(uid, cid, message) VALUES(%s, %s, %s)"
                cur.execute(sql, (uid, cid, message,))
                conn.commit()
        except pymysql.Error as e:
@@ -257,13 +257,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = """
-                   SELECT id, u.uid, user_name, message 
-                   FROM messages AS m 
-                   INNER JOIN users AS u ON m.uid = u.uid 
-                   WHERE cid = %s 
-                   ORDER BY id ASC;
-               """
+               sql = "SELECT * FROM Messages;"
                cur.execute(sql, (cid,))
                messages = cur.fetchall()
                return messages
