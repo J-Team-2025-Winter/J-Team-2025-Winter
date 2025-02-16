@@ -238,12 +238,12 @@ class Channel:
 # メッセージクラス
 class Message:
    @classmethod
-   def create(cls, uid, cid, message):
+   def create(cls, message_id, content, image_url, sent_at, reservation_id, customers_stylists_id):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO Messages(uid, cid, message) VALUES(%s, %s, %s)"
-               cur.execute(sql, (uid, cid, message,))
+               sql = "INSERT INTO Messages(message_id, content, image_url, sent_at, reservation_id, customers_stylists_id) VALUES(%s, %s, %s, %s, %s, %s);"
+               cur.execute(sql, (message_id, content, image_url, sent_at, reservation_id, customers_stylists_id,))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')

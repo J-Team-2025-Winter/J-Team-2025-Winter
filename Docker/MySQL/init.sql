@@ -38,7 +38,7 @@ CREATE TABLE stylists (
  CREATE TABLE Messages (
      message_id INT AUTO_INCREMENT PRIMARY KEY,
      content VARCHAR(255) NOT NULL,
-     image_url INT NOT NULL,
+     image_url VARCHAR(255),
      sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
      reservation_id INT,
      customers_stylists_id INT
@@ -55,7 +55,7 @@ CREATE TABLE stylists (
 
 INSERT INTO customers(customer_id, customer_name, email, password, phone, gender) VALUES('00000000-0000-0000-0000-000000000000','Customer Zero','customerzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '00011112222', 'Male');
 INSERT INTO stylists(stylist_id, store_id, stylist_name, email, password, phone, gender, profile_picture_url, comment) VALUES('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '1', 'Stylist Zero','stylistzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '33344445555', 'Male', 'profile-picture', 'hasami no koto nara omakase kudasai');
-INSERT INTO customers_stylists(customers_stylists_id, customer_id, stylist_id) VALUES('1','00000000-0000-0000-0000-000000000000','aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
+INSERT INTO customers_stylists(customer_id, stylist_id) VALUES('00000000-0000-0000-0000-000000000000','aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'); --インクリメントされていれば、挿入する際に値を指定する必要がない
 -- INSERT INTO channels(id, uid, name, abstract) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8','ぼっち部屋','テストさんの孤独な部屋です');
-INSERT INTO Messages(id, uid, cid, message) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8', '1', '誰かかまってください、、')
+INSERT INTO Messages(content, image_url, reservation_id, customers_stylists_id) VALUES('Hello!','image_pictures',1, 2);
 --INSERT INTO Messages(id, uid, cid, message) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8', '1', '誰かかまってください、、')
