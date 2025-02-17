@@ -1,0 +1,85 @@
+
+/* auth-wrapperの説明*/
+.auth-wrapper{
+    width:100vw;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color: var(--navy_blue);
+}
+/* containerの説明*/
+.auth-container{
+    width:90%;
+    height:90%;
+    margin:auto;
+    border-radius:1px;
+    display:flex;
+    flex-direction:column;
+    background-color: var(--navy_blue);    
+}
+
+.auth-form-wrapper{
+    width:auto;
+    height: auto;
+    margin:auto;
+    border-radius:1px;
+    display:flex;
+    padding:50px;
+    background-color: var(--white_1);    
+}
+/* タイトル文の説明*/
+.auth-title{
+    margin-bottom:20px; 
+    color:var(--white_1)
+}
+
+/* サブタイトルの説明*/
+.sub-title{
+    font-size:x-small;
+}
+
+.auth-form div{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:15px;
+}
+.auth-form label{
+    font-size:12px;
+    color:var(--navy_blue)
+}
+
+.auth-form input{
+    border: solid 1px var(--navy_blue);
+    line-height:12px;
+    width:100%
+}
+
+.auth-form input:focus{
+    border: solid 1px var(--navy_blue);
+    background-color: var(--navy_blue);
+    color:var(--white_1)
+}
+
+.auth-button{
+    width:100%;
+    margin-bottom:12px;
+}
+
+footer{
+    /*footerの装飾*/
+    width: 100%;
+    background-color: var(--navy_blue);
+   margin-right:20px;
+   margin-bottom:20px;
+   text-align:right ;
+   bottom:0;
+   right:0;
+
+    padding: 30px 0;
+}
+
+:root{
+    --navy_blue:#213555;
+    --white_1:#FAFAFA;
+}
