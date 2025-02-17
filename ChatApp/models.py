@@ -143,12 +143,12 @@ class Channel:
             db_pool.release(conn)
 
     @classmethod
-    def get_all_customers(cls):
+    def get_all_customers(cls, uid):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM customers;"
-               cur.execute(sql)
+               sql = "SELECT * FROM customers AS c INNER JOIN customers_stylists AS cs ON c.customer_id = cs.customer_id WHERE stylist_id = (%s);"
+               cur.execute(sql, (uid,))
                channels_user = cur.fetchall()
                return channels_user
        except pymysql.Error as e:
@@ -158,12 +158,12 @@ class Channel:
            db_pool.release(conn)
 
     @classmethod
-    def get_all_stylists(cls):
+    def get_all_stylists(cls, uid):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM stylists;"
-               cur.execute(sql)
+               sql = "SELECT * FROM stylists AS s INNER JOIN customers_stylists AS cs ON s.stylist_id = cs.stylist_id WHERE customer_id = (%s);"
+               cur.execute(sql, (uid,))
                channels_stylist = cur.fetchall()
                return channels_stylist
        except pymysql.Error as e:

@@ -178,12 +178,12 @@ def channels_user_view():
     if uid is None:
         return redirect(url_for('login_view'))
     else:
-        channels_stylist = Channel.get_all_stylists() #cid渡す
+        channels_stylist = Channel.get_all_stylists(uid) #cid渡す
         channels_stylist.reverse()
         return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
 
 
-@app.route('/display_profile/<path:filename>')
+@app.route('/display_profile/<filename>')
 def display_profile_process(filename):
     return send_from_directory('uploads', filename)
 
@@ -195,7 +195,7 @@ def channels_stylist_view():
     if uid is None:
         return redirect(url_for('login_staff_view'))
     else:
-        channels_user = Channel.get_all_customers()
+        channels_user = Channel.get_all_customers(uid)
         channels_user.reverse()
         return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
