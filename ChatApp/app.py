@@ -221,7 +221,7 @@ def channels_stylist_view():
 #    return redirect(url_for('channels_stylist_view'))
 
 #顧客チャンネル一覧後、チャット機能に移行する前の処理
-@app.route('/channels_user/<cid>/messages', methods=['GET'])#cid→sid(stylist_id), 1.customer_stylistのレコードを作成 2.GETメソッドでメッセージを表示
+@app.route('/channels_user/<int:cid>/messages', methods=['GET'])#cid→sid(stylist_id), 1.customer_stylistのレコードを作成 2.GETメソッドでメッセージを表示
 def detail_user_channel(cid):
     uid = session.get('uid')
     if uid is None:

@@ -257,7 +257,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM Messages;"
+               sql = "SELECT * FROM Messages WHERE customers_stylists_id = %s;" # [hiyo]「WHERE customers_stylists_id = %s」を追記
                cur.execute(sql, (cid,))
                messages = cur.fetchall()
                return messages

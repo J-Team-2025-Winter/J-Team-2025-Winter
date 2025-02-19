@@ -5,13 +5,22 @@
     <div id="chat-header">
       <p class="channel-title-text detail-title">PLAUDERN</p>
       <!-- もしuidとチャンネル作成者が同じならタイトル、説明を編集可能にする -->
+      <p id="chatroom-name">{{ channel.name }}</p>
+      {% if channel.abstract is not none %}
+      <p id="chatroom-description">{{ channel.abstract }}</p>
+      {% endif %} {% if uid == channel.uid %}
+      <button id="channel-update-button">
+        <ion-icon name="brush" style="color: #ffffff"></ion-icon>
+      </button>
+      {% include 'modal/update-channel.html' %} {% endif %}
+    </div>
     <div id="message-area">
       {% if messages|length > 0 %} {% for message in messages %} {% if
       message.uid == uid %}
       <div class="my-messages">
         <p class="box box-right">{{ message.message }}</p>
         <form
-          action="/channels/{{ stylists.customers_stylists_id }}/messages/{{ message.id }}"
+          action="/channels/{{ channel.id }}/messages/{{ message.id }}"
           method="POST"
         >
           <button
@@ -38,7 +47,7 @@
     <div class="typing-box-wrapper">
       <form class="typing-box" method="POST" name="newMessageForm">
         <textarea name="message" id="message" autofocus></textarea>
-        <input type="hidden" name="cid"/>
+        <input type="hidden" name="cid" value="{{ channel.id }}" />
         <button type="submit" id="add-message-button">
           <ion-icon name="paper-plane"></ion-icon>
         </button>
