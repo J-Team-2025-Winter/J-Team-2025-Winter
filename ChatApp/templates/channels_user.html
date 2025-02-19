@@ -6,8 +6,9 @@
     <h1>Stylists</h1>
       {% for stylists in channels_stylist %}
         <p>
-          {{ url_for('detail_user_channel', cid=stylists.customers_stylists_id) }}<br>
-          {{ stylists.stylist_name }}<br>
+          <a href="{{ url_for('detail_user_channel', cid=stylists.customers_stylists_id) }}">
+          {{ stylists.stylist_name }}
+          </a><br>
           <img src="{{ url_for('display_profile_process', filename=stylists.profile_picture_url) }}" alt="Profile_Picture"><br>
           {{ stylists.comment }}<br>
         </p>
