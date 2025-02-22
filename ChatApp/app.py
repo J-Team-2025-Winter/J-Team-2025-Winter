@@ -278,28 +278,57 @@ def create_stylist_messages(cid):
     return redirect('/channels_stylist/{cid}/messages'.format(cid = cid))
 
 
+# 顧客プロフィール編集ページの表示
+@app.route('/edit_user_profile', methods=['GET'])
+def edit_user_profile_view():
+    return render_template('auth/edit_user_profile.html')
+
+# 顧客プロフィールの更新処理
+@app.route('/edit_user_profile', methods=['POST'])
+def edit_user_profile_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
+    password = request.form.get('password').strip()
+    passwordConfirmation = request.form.get('password-confirmation').strip()
+
+    if password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
+    elif email != "" and re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = session.get('uid')
+        Customer.edit_profile(uid, name, email, phone, gender, password)
+        return render_template('main.html')
+    return redirect(url_for('edit_user_profile_view'))
+
 # 美容師プロフィール編集ページの表示
-@app.route('/edit_profile', methods=['GET'])
-def edit_profile_view():
-    return render_template('auth/edit_profile.html')
+@app.route('/edit_stylist_profile', methods=['GET'])
+def edit_stylist_profile_view():
+    return render_template('auth/edit_stylist_profile.html')
 
-# 美容師プロフィールの登録処理
-@app.route('/edit_profile', methods=['POST'])
-def edit_profile_process():
-    if 'file' not in request.files:
-        flash('ファイルがありません')
-        return redirect(url_for('edit_profile_view'))
+# 美容師プロフィールの更新処理
+@app.route('/edit_stylist_profile', methods=['POST'])
+def edit_stylist_profile_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
+    password = request.form.get('password').strip()
+    passwordConfirmation = request.form.get('password-confirmation').strip()      
     file = request.files['file']
-    filename = file.filename
-    app.config['uploads'] = 'uploads'
-    file.save(os.path.join(app.config['uploads'], filename))
-
     comment = request.form.get('comment')
 
-    uid = session.get('uid')
-    Stylist.edit_profile(uid, filename, comment)
-    return render_template('channels_stylist.html')
-
+    if password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
+    elif email != "" and re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = session.get('uid')
+        Stylist.edit_profile(uid, name, email, phone, gender, password, file, comment)
+        return render_template('channels_stylist.html')
+    return redirect(url_for('edit_stylist_profile_view'))
 
 # 予約ページの表示
 @app.route('/make_reservation', methods=['GET', 'POST'])

@@ -1,6 +1,11 @@
-from flask import abort
+from flask import Flask, abort
 import pymysql
 from util.DB import DB
+import hashlib
+import os
+
+
+app = Flask(__name__)
 
 
 # 初期起動時にコネクションプールを作成し接続を確立
@@ -39,6 +44,43 @@ class Customer:
        finally:
            db_pool.release(conn)
 
+   @classmethod
+   def edit_profile(cls, uid, name, email, phone, gender, password):
+       # set_clauseとparamsを定義する 
+       set_clause = []
+       params = []
+
+       if name: #「nameが空文字列、None、Falseでない場合」のPythonicな書き方
+           set_clause.append("customer_name=%s") # set_clauseに「customer_name=%s」を追加する
+           params.append(name) # paramsに「name」を追加する
+       if email:
+           set_clause.append("email=%s")
+           params.append(email)
+       if phone:
+           set_clause.append("phone=%s")
+           params.append(phone)
+       if gender:
+           set_clause.append("gender=%s")
+           params.append(gender)
+       if password:
+           password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+           set_clause.append("password=%s")
+           params.append(password)
+
+       if set_clause:
+           conn = db_pool.get_conn()
+           try:
+                with conn.cursor() as cur: #「', '.join(set_clause)」で、set_clauseに追加したものを「, 」で結合する
+                    sql = f"UPDATE customers SET {', '.join(set_clause)} WHERE customer_id=%s;"
+                    params.append(uid)
+                    cur.execute(sql, params) # paramsに追加したものが「%s」に充てられる
+                    conn.commit()
+           except pymysql.Error as e:
+                print(f'エラーが発生しています：{e}')
+                abort(500)
+           finally:
+                db_pool.release(conn)
+
 # 美容師クラス
 class Stylist:
    @classmethod
@@ -54,7 +96,6 @@ class Stylist:
            abort(500)
        finally:
            db_pool.release(conn)
-
 
    @classmethod
    def find_by_email(cls, email):
@@ -72,18 +113,50 @@ class Stylist:
            db_pool.release(conn)
 
    @classmethod
-   def edit_profile(cls, uid, filename, comment):
-       conn = db_pool.get_conn()
-       try:
-           with conn.cursor() as cur:
-               sql = "UPDATE stylists SET profile_picture_url=%s, comment=%s WHERE stylist_id=%s;"
-               cur.execute(sql, (filename, comment, uid,))
-               conn.commit()
-       except pymysql.Error as e:
-           print(f'エラーが発生しています：{e}')
-           abort(500)
-       finally:
-           db_pool.release(conn)
+   def edit_profile(cls, uid, name, email, phone, gender, password, file, comment):
+       # set_clauseとparamsを定義する 
+       set_clause = []
+       params = []
+
+       if name: #「nameが空文字列、None、Falseでない場合」のPythonicな書き方
+           set_clause.append("stylist_name=%s") # set_clauseに「customer_name=%s」を追加する
+           params.append(name) # paramsに「name」を追加する
+       if email:
+           set_clause.append("email=%s")
+           params.append(email)
+       if phone:
+           set_clause.append("phone=%s")
+           params.append(phone)
+       if gender:
+           set_clause.append("gender=%s")
+           params.append(gender)
+       if password:
+           password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+           set_clause.append("password=%s")
+           params.append(password)
+       if file:
+           filename = file.filename
+           app.config['uploads'] = 'uploads'
+           file.save(os.path.join(app.config['uploads'], filename))
+           set_clause.append("profile_picture_url=%s")
+           params.append(filename)
+       if comment:
+           set_clause.append("comment=%s")
+           params.append(comment)
+
+       if set_clause:
+           conn = db_pool.get_conn()
+           try:
+                with conn.cursor() as cur: #「', '.join(set_clause)」で、set_clauseに追加したものを「, 」で結合する
+                    sql = f"UPDATE stylists SET {', '.join(set_clause)} WHERE stylist_id=%s;"
+                    params.append(uid)
+                    cur.execute(sql, params) # paramsに追加したものが「%s」に充てられる
+                    conn.commit()
+           except pymysql.Error as e:
+                print(f'エラーが発生しています：{e}')
+                abort(500)
+           finally:
+                db_pool.release(conn)
 
 
 # チャンネルクラス
