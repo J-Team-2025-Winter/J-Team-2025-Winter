@@ -259,9 +259,9 @@ def create_user_message(cid):
     message = request.form.get('message')
 
     if message:
-        Message.create(uid, cid, message)
+        Message.create(message, uid, cid)
 
-    return redirect('/channels/{cid}/messages'.format(cid = cid))
+    return redirect('/channels_user/{cid}/messages'.format(cid = cid))
 
 #店舗側/美容師側メッセージの投稿
 @app.route('/channels_stylist/<cid>/messages',methods=['POST'])
