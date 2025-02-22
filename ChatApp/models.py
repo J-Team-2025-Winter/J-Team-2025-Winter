@@ -46,8 +46,8 @@ class Stylist:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
-               cur.execute(sql, (stylist_id, name, email, phone, gender, password,))
+               sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password, profile_picture_url) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+               cur.execute(sql, (stylist_id, name, email, phone, gender, password, 'No Images',))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
