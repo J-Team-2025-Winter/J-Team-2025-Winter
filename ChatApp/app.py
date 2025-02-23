@@ -6,7 +6,7 @@ import uuid
 import hashlib
 import calendar
 
-from models import Customer, Stylist, Channel, Message
+from models import Customer, Stylist, Channel, Message #, Reservation
 from datetime import datetime
 
 # 定数定義
@@ -232,7 +232,7 @@ def detail_user_channel(cid):
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages.html', messages=messages, uid=uid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
+    return render_template('messages_user.html', messages=messages, uid=uid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<cid>/messages', methods=['GET'])
@@ -340,6 +340,7 @@ def make_reservation_view():
 
     if request.method == 'POST':
         selected_date = request.form.get('date')
+      #  Reservation.
 
     cal = calendar.HTMLCalendar().formatmonth(year, month)
     return render_template('make_reservation.html', calendar=cal, selected_date=selected_date)
