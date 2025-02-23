@@ -24,9 +24,20 @@
       <form class="typing-box" method="POST" name="newMessageForm">
         <textarea name="message" id="message" autofocus></textarea>
         <button type="submit" id="add-message-button">
-          <ion-icon name="paper-plane"></ion-icon>
+          <ion-icon name="paper-plane">送信</ion-icon>
         </button>
       </form>
+    </div>
+    <div class="messages_user-button-container">
+      <a class="back-to-channels_user" href="{{ url_for('channels_user_view') }}">
+        戻る
+      </a>
+      <a class="view-template" href="{{ url_for('main_view') }}">
+        テンプレート
+      </a>
+      <a class="view-make_reservation" href="{{ url_for('make_reservation_view') }}">
+        予約
+      </a>
     </div>
 </div>
 {% endblock %}
