@@ -1,4 +1,4 @@
-.main-container{
+.customer_main-wrapper{
     width:100vw;
     min-height:100vh;
     display:flex;
@@ -6,6 +6,18 @@
     align-items:center;
     background-color: var(--navy_blue);
 }
+.customer_main-container{
+    width:auto;
+    height: auto;
+    margin:auto;
+    border-radius:1px;
+    flex-direction:column;
+    align-items:center;
+    display:flex;
+    padding:50px;
+    background-color: var(--white_1); 
+}
+
 h1{
     font-size:32px;
     color:var(--black);
@@ -13,15 +25,21 @@ h1{
     padding:10px;
 }
 
-.main-title{
-
-}
+.menu-hr{
+    border:0;
+    height:2px;
+    border-width:100%;
+    border-color:var(--gray)
+ }
 
 :root{
     --navy_blue:#213555;
     --white_1:#FAFAFA;
     --black:#3D3D3D;
+    --gray:#494848;
 }
+
+
 
 /*　以下でボタンを押下したら色が変わるJavascriptを入れたい。
 /*.main-button-container a.active {
