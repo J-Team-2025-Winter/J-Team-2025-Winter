@@ -1,0 +1,21 @@
+{% extends 'base.html' %} {% block title %}
+<title>reservation</title>
+{% endblock %} {% block body %}
+<div>
+    <div>
+      <p>予約一覧</p>
+    </div>
+    <div>
+      {% for reservation in reservations %}
+        <p>
+          {{ reservation.customer_name }} {{ reservation.reservation_date }} <br>
+        </p>
+      {% endfor %}
+    </div>
+    <div>
+      <a href="{{ url_for('channels_stylist_view') }}">
+        戻る
+      </a>
+    </div>
+</div>
+{% endblock %}
