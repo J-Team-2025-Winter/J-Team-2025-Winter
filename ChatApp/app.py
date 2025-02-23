@@ -6,7 +6,7 @@ import uuid
 import hashlib
 import calendar
 
-from models import Customer, Stylist, Channel, Message #, Reservation
+from models import Customer, Stylist, Channel, Message, Reservation
 from datetime import datetime
 
 # 定数定義
@@ -232,7 +232,7 @@ def detail_user_channel(cid):
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages_user.html', messages=messages, uid=uid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
+    return render_template('messages_user.html', messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<cid>/messages', methods=['GET'])
@@ -330,20 +330,23 @@ def edit_stylist_profile_process():
         return render_template('channels_stylist.html')
     return redirect(url_for('edit_stylist_profile_view'))
 
+
 # 予約ページの表示
-@app.route('/make_reservation', methods=['GET', 'POST'])
-def make_reservation_view():
-    now = datetime.now()
-    year = now.year
-    month = now.month
-    selected_date = None
+@app.route('/make_reservation/<cid>', methods=['GET', 'POST'])
+def make_reservation_view(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
 
     if request.method == 'POST':
+        uid = session.get('uid')
         selected_date = request.form.get('date')
-      #  Reservation.
+        Reservation.create(uid, selected_date, cid)
+        message = f"{selected_date}で予約しました！"
+        Message.create(message, uid, cid)
+        return redirect(url_for('detail_user_channel', cid=cid))
 
-    cal = calendar.HTMLCalendar().formatmonth(year, month)
-    return render_template('make_reservation.html', calendar=cal, selected_date=selected_date)
+    return render_template('make_reservation.html', cid=cid)
 
 # 予約確認ページの表示（顧客）
 @app.route('/user_reservation', methods=['GET'])
@@ -353,8 +356,8 @@ def user_reservation_view():
 # 予約確認ページの表示（店舗）
 @app.route('/stylist_reservation', methods=['GET'])
 def stylist_reservation_view():
-    return render_template('stylist_reservation.html')
-
+    reservations = Reservation.get_all_reservations()
+    return render_template('stylist_reservation.html', reservations=reservations)
 
 
 if __name__ == '__main__':

@@ -315,7 +315,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO Messages(content, uid, cid) VALUES(%s, %s, %s);"
+               sql = "INSERT INTO messages(content, uid, cid) VALUES(%s, %s, %s);"
                cur.execute(sql, (message, uid, cid,))
                conn.commit()
        except pymysql.Error as e:
@@ -330,7 +330,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM Messages WHERE cid = %s;" # [hiyo]「WHERE cid = %s」を追記
+               sql = "SELECT * FROM messages WHERE cid = %s;" # [hiyo]「WHERE cid = %s」を追記
                cur.execute(sql, (cid,))
                messages = cur.fetchall()
                return messages
@@ -354,3 +354,39 @@ class Message:
 #            abort(500)
 #        finally:
 #            db_pool.release(conn)
+
+# 予約クラス
+class Reservation:
+   @classmethod
+   def create(cls, uid, selected_date, cid):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = """
+               INSERT INTO reservations(customer_id, stylist_id, reservation_date)
+               SELECT %s, cs.stylist_id, %s
+               FROM customers_stylists AS cs
+               WHERE customers_stylists_id = %s;
+               """
+               cur.execute(sql, (uid, selected_date, cid))
+               conn.commit()
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
+   def get_all_reservations(cls):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "SELECT * FROM reservations AS r INNER JOIN customers AS c ON r.customer_id = c.customer_id ORDER BY reservation_date DESC;"
+               cur.execute(sql)
+               reservations = cur.fetchall()
+               return reservations
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
