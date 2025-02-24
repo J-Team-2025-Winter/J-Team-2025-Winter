@@ -28,7 +28,15 @@ def index():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    return redirect(url_for('main_view'))
+    else:
+        registered_customer = Customer.find_by_uid(uid)
+        registered_stylist = Stylist.find_by_uid(uid)
+        if registered_customer:
+            return redirect(url_for('main_view'))
+        elif registered_stylist:
+            return redirect(url_for('channels_stylist_view'))
+        else:
+            return redirect(url_for('login_view'))
 
 
 # サインアップページの表示(顧客)
@@ -161,8 +169,18 @@ def login_staff_process():
 # ログアウト
 @app.route('/logout')
 def logout():
+    uid = session.get('uid')
+    registered_customer = Customer.find_by_uid(uid)
+    registered_stylist = Stylist.find_by_uid(uid)
+    
     session.clear()
-    return redirect(url_for('login_view'))
+
+    if registered_customer:
+        return redirect(url_for('login_view'))
+    elif registered_stylist:
+        return redirect(url_for('login_staff_view'))
+    else:
+        return redirect(url_for('login_view'))
 
 
 # ユーザーTOPページの表示
