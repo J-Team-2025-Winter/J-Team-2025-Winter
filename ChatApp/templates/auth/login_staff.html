@@ -3,16 +3,15 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
-    <img
+    <!--<img
      src="{url_for('static',filename='img/icon.png')}"
      class="logo"
-     />
+     />-->
     <div class="auth-form-wrapper">
       <form class="auth-form" method="post">
         <h1 class="auth-title">STAFF LOGIN</h1>
         <div>
           <label for="email-input">Mail Address</label>
-          <br>
           <input
             type="text"
             placeholder="ID(メールアドレス)"
@@ -22,7 +21,6 @@
         </div>
         <div>
           <label for="password-input">Password</label>
-          <br>
           <input
             type="password"
             placeholder="パスワード"
