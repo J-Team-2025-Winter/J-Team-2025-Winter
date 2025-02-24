@@ -341,7 +341,7 @@ class Channel:
 # メッセージクラス
 class Message:
    @classmethod
-   def create(cls, message, uid, cid):
+   def create(cls, message, uid, cid):#message= content
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:

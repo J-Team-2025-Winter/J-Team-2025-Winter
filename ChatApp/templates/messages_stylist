@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block title %}
+<title>chatroom</title>
+{% endblock %} {% block body %}
+<div class="main-container">
+    <div id="chat-header">
+      <p class="channel-title-text detail-title">お客様相談室</p>
+    <div id="message-area">
+      {% if messages|length > 0 %} {% for message in messages %} {% if
+      message.uid == uid %}
+      <div class="my-messages">
+        <p class="sent_at">{{ message.sent_at }}</p>
+        <p class="box box-right">{{ message.content | safe }}</p>
+      </div>
+      {% else %}
+      <div class="messages">
+        <p class="sent_at">{{ message.sent_at }}</p>
+        <p class="box box-left">{{ message.content | safe }}</p>
+      </div>
+      {% endif %} {% endfor %} {% else %}
+      <p id="no-message">まだメッセージがありません</p>
+      {% endif %}
+    </div>
+    <div class="typing-box-wrapper">
+      <form class="typing-box" method="POST" name="newMessageForm">
+        <textarea name="message" id="message" autofocus></textarea>
+        <button type="submit" id="add-message-button">
+          <ion-icon name="paper-plane">送信</ion-icon>
+        </button>
+      </form>
+    </div>
+    <div class="messages_user-button-container">
+      <a class="back-to-channels_user" href="{{ url_for('channels_stylist_view') }}">
+        戻る
+      </a> 
+    </div>
+</div>
+{% endblock %}
