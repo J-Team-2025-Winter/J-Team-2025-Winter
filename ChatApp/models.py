@@ -45,6 +45,21 @@ class Customer:
            db_pool.release(conn)
 
    @classmethod
+   def find_by_uid(cls, uid):
+       conn = db_pool.get_conn()
+       try:
+               with conn.cursor() as cur:
+                   sql = "SELECT * FROM customers WHERE customer_id=%s;"
+                   cur.execute(sql, (uid,))
+                   customer = cur.fetchone()
+               return customer
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
    def edit_profile(cls, uid, name, email, phone, gender, password):
        # set_clauseとparamsを定義する 
        set_clause = []
@@ -106,6 +121,21 @@ class Stylist:
                    cur.execute(sql, (email,))
                    user = cur.fetchone()
                return user
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
+   def find_by_uid(cls, uid):
+       conn = db_pool.get_conn()
+       try:
+               with conn.cursor() as cur:
+                   sql = "SELECT * FROM stylists WHERE stylist_id=%s;"
+                   cur.execute(sql, (uid,))
+                   stylist = cur.fetchone()
+               return stylist
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
            abort(500)
