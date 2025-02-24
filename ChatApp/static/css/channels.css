@@ -8,28 +8,70 @@
     align-items:center;
     background-color: var(--navy_blue);
 }
-/* stylists_containerの説明*/
 .channels_syilist_container{
-        width:90%;
-        height:90%;
-        margin:50px;
+        width:auto;
+        height:auto;
+        margin:10%;
+        box-sizing:border-box;
         flex-direction:column;
         align-items:center;
         display:flex;
         padding:50px;
+        margin:0 auto;
         background-color: var(--white_1); 
         padding-bottom: 100px;
-        position: relative;
+}
+
+.stylist-info{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+    background-color:var(--brown);
+    border-radius:1px;
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items: center; 
+    margin: 20px auto;
+    box-sizing: border-box; 
+}
+
+.stylist-name{
+    width: 100%;
+    max-width:400px;
+    border:1px solid var(--black);
+    border-radius:1px;
+    background-color:var(--white_1);
+    display: inline-block; 
+    padding:5px;
+}
+.stylist-picture{
+    width:100%;
+    height: 100%;
+    border:1px solid var(--black);
+    display: block; 
+}
+
+.stylist-comment{
+    width:100%;
+    border:1px solid var(--black);
+    border-radius:1px;
+    background-color:var(--white_1);
+    margin: bottom 5px;
+    display:inline-block;
+    padding:10px;
 }
 
 h1{
-    width:auto;
+    width:100%;
     height:auto;
     display:flex;
-    justify-content: space-between;
+    justify-content: center;
+    text-align:center;
     align-items:center;
-    color:var(--black);
-    background-color:var(--white_1);
+    color:var(--white_1);
+    background-color:var(--navy_blue);
     padding:0px;
 }
 
@@ -42,25 +84,185 @@ h1{
     justify-content:center;
     align-items:center;
     background-color: var(--navy_blue);
+    flex-direction:column;
 }
 /* users_containerの説明*/
 .channnels_users_container{
+    width:100%;
+    max-width: 1200px; 
+    margin:0 auto;
+    border-radius:1px;
+    padding:50px;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    background-color: var(--navy_blue);    
+}
+.channnels_users_wrapper{
     width:90%;
     height:90%;
     margin:auto;
     border-radius:1px;
     display:flex;
     flex-direction:column;
-    background-color: var(--navy_blue);    
+    background-color: var(--white_1);    
 }
-.channnels_users_wrapper{
-    width:auto;
-    height:auto;
-    margin:auto;
-    border-radius:1px;
+
+.back-button {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 40px;
+    left: 30px;
+    cursor: pointer;
+    transition:border-right-color 0.3s ease-in-out;
+}
+
+.back-button span {
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 15px solid var(--brown2); /* 右向きの三角形 */
+}
+
+.stylist-def{
+    color:var(--gray);
+    font-size:12px;
+}
+
+.back-button:hover span {
+    border-right-color: var(--brown); /* ホバー時に色変更 */
+}
+
+
+.customer_hamburger_menu{
+    display:flex;
+    justify-content:right;
+    text-align: center;
+    align-items:center;
+    flex-shrink:0;
+    width:50px;
+    height: 100%;
+}
+.hamburger__icon{
+    width:50px;
+    aspect-ratio: 1;
     display:flex;
     flex-direction:column;
-    background-color: var(--white_1);    
+    justify-content:center;
+    align-items:center;
+    gap: 6px;
+    background-color:var(--brown);
+    border:none;
+    cursor: pointer;
+    position:relative;
+}
+.hamburger__icon span {
+    width: 30px;
+    height: 3px;
+    background:var(--black);
+    transition: transform 0.3s, opacity 0.3s;
+    position: absolute;
+}
+  
+/* 1本目（上の線） */
+.hamburger__icon span:nth-child(1) {
+    top: 12px;
+    justify-content:center;
+}
+
+/* 2本目（中央の線） */
+.hamburger__icon span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    justify-content:center;
+}
+/* 3本目（下の線） */
+.hamburger__icon span:nth-child(3) {
+    bottom: 12px;
+}
+
+
+.customer_hamburger_menu.active .hamburger__icon span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg); 
+}
+
+.customer_hamburger_menu.active .hamburger__icon span:nth-child(2) {
+    opacity: 0;
+}
+
+.customer_hamburger_menu.active .hamburger__icon span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+}
+  
+/* メニューの表示/非表示 */
+.nav__links {
+    display: none;
+    flex-direction:column;
+    gap:10px 0;
+    background-color:var(--brown2);
+    color:var(--brown);
+    box-shadow:0 0 10px var(--black);
+    border-radius:5px;
+    position:absolute;
+    top:50px;
+    height:50vh;
+    right:0;
+    width:200px;
+}
+  
+.customer_hamburger_menu.active .nav__links {
+    display: block;
+}
+
+.nav__links a {
+    color:var(--black);
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+    display: block;
+    text-align: center;
+    transition:bacground-color 0.3s ease;
+}
+
+
+.nav__links a:hover {
+    background-color: var(--white_1);
+    border-radius: 5px;
+}
+
+h1{
+    align-items:left;
+    color:var(--white_1);
+    background-color:var(--navy_blue);
+    flex-grow: 1; 
+    font-size:24px;
+    padding:0 10px;
+    height:100%;
+    display:flex;
+}
+
+
+
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+.channels_syilist_container {
+    padding: 20px; 
+    margin: 10%;
+}
+    
+h1 {
+    font-size: 18px;
+}
+.channels_users_container,
+.channnels_users_wrapper {
+        width: 100%;
+        padding: 10px;
+}
 }
 
 :root{
@@ -69,4 +271,5 @@ h1{
     --black:#3D3D3D;
     --gray:#494848;
     --brown:#D8C4B6;
+    --brown2:#F5EFE7;
 }

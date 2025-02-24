@@ -1,9 +1,9 @@
 {% extends 'base.html' %} {% block title %}
-<title>chatroom</title>
+<title>{{ stylist_name }}</title>
 {% endblock %} {% block body %}
-<div class="main-container">
+<div class="chat-main-container">
     <div id="chat-header">
-      <p class="channel-title-text detail-title">相談室</p>
+      <p class="channel-title-text detail-title">{{ stylist_name }}</p>
     <div id="message-area">
       {% if messages|length > 0 %} {% for message in messages %} {% if
       message.uid == uid %}
