@@ -98,12 +98,15 @@
     background-color:var(--brown2);
     color:var(--brown);
     box-shadow:0 0 10px var(--black);
-    border-radius:5px;
+    border-radius:1px;
+    border:1px solid ver(--navy_blue);
     position:absolute;
     top:50px;
-    height:50vh;
+    height:30wv;
     right:0;
-    width:200px;
+    width:50%;
+    justify-content: space-evenly;
+    z-index: 10;
 }
   
 .customer_hamburger_menu.active .nav__links {
@@ -120,10 +123,9 @@
     transition:bacground-color 0.3s ease;
 }
 
-
 .nav__links a:hover {
-    background-color: var(--white_1);
-    border-radius: 5px;
+    background-color: var(--navy_blue);
+    border-radius: 1px;
 }
   
 
