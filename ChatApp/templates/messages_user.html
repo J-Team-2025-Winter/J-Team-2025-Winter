@@ -3,7 +3,7 @@
 {% endblock %} {% block body %}
 <div class="chat-main-container">
     <div id="chat-header">
-      <p class="channel-title-text detail-title">{{ stylist_name }}</p>
+      <p class="channel-title-text detail-title">{{ chatname }}</p>
     <div id="message-area">
       {% if messages|length > 0 %} {% for message in messages %} {% if
       message.uid == uid %}
