@@ -367,15 +367,34 @@ def make_reservation_view(cid):
     return render_template('make_reservation.html', cid=cid)
 
 # 予約確認ページの表示（顧客）
-@app.route('/user_reservation', methods=['GET'])
-def user_reservation_view():
-    return render_template('user_reservation.html')
+# @app.route('/user_reservation', methods=['GET'])
+# def user_reservation_view():
+#     return render_template('user_reservation.html')
 
 # 予約確認ページの表示（店舗）
 @app.route('/stylist_reservation', methods=['GET'])
 def stylist_reservation_view():
     reservations = Reservation.get_all_reservations()
     return render_template('stylist_reservation.html', reservations=reservations)
+
+
+# テンプレートの表示
+@app.route('/template/<cid>', methods=['GET', 'POST'])
+def template_view(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+
+    if request.method == 'POST':
+        uid = session.get('uid')
+        cut = request.form.get('cut')
+        color = request.form.get('color')
+        parma = request.form.get('parma')
+        message = f"CUT：{cut}\nCOLOR：{color}\nPARMA：{parma}".replace("\n", "<br>")
+        Message.create(message, uid, cid)
+        return redirect(url_for('detail_user_channel', cid=cid))
+
+    return render_template('template.html', cid=cid)
 
 
 if __name__ == '__main__':

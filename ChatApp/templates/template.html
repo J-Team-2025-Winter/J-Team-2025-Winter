@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block title %}
+<title>reservation</title>
+{% endblock %} {% block body %}
+<div>
+    <div>
+      <p>テンプレート</p>
+    </div>
+    <div>
+      <form action="{{ url_for('template_view', cid=cid) }}" method="POST">
+        <input type="text" placeholder="CUT" name="cut"><br>
+        <input type="text" placeholder="COLOR" name="color"><br>
+        <input type="text" placeholder="PARMA" name="parma"><br>
+        <button type="submit">決定</button>
+      </form>
+    </div>
+    <div>
+      <a href="{{ url_for('detail_user_channel', cid=cid) }}">
+        戻る
+      </a>
+    </div>
+</div>
+{% endblock %}
