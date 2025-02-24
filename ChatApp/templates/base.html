@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='\css\gen\common.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/gen/common.css')}}">
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
     </style>
@@ -12,7 +12,10 @@
     {% block title %}{% endblock %}
   </head>
   <body>
-    <link rel="stylesheet" href="{{ url_for('static', filename='\css\gen\common.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/gen/common.css')}}">
     {% block body %}{% endblock %}
   </body>
+  <footer class="footer">
+    <img src="static\img\icon.png" alt="ページを表示できません">
+  </footer>
 </html>

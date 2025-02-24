@@ -1,8 +1,0 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const menu = document.querySelector(".customer_hamburger_menu");
-  const icon = document.querySelector(".hamburger__icon");
-
-  menu.addEventListener("click", function () {
-    menu.classList.toggle("active");
-  });
-});
