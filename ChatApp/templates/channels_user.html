@@ -5,22 +5,22 @@
 <div class="channels_users_mainwrapper">
   <div class="channnels_users_container">
     <div class="channels_user-button-container">
-      <a class="back-to-main" href="{{ url_for('main_view') }}">
-        戻る
-      </a>
+      <a href="{{ url_for('main_view') }}"class="back-button"><span></span></a>
     </div>
     <div class="channels_user-title">
-      <h1>Stylists</h1>
+      <h1>STYLIST</h1>
       <div class="channnels_users_wrapper">
-        {% for stylists in channels_stylist %}
-          <p>
-            <a href="{{ url_for('detail_user_channel', cid=stylists.customers_stylists_id) }}">
-            {{ stylists.stylist_name }}
-            </a><br>
-            <img src="{{ url_for('display_profile_process', filename=stylists.profile_picture_url) }}" alt="Profile_Picture"><br>
-            {{ stylists.comment }}<br>
-          </p>
-       {% endfor %}
+        <p class="stylist-def">下記より選択頂きますとチャット画面に移動します</p>
+        <div class="stylist-container-detail">
+          {% for stylists in channels_stylist %}
+            <div class="stylist-item">
+              <div class="stylist-info">
+                <p><a href="{{ url_for('detail_user_channel', cid=stylists.customers_stylists_id) }}" class="stylist-name">{{ stylists.stylist_name }}</a></p>
+                <img src="{{ url_for('display_profile_process', filename=stylists.profile_picture_url) }}" alt="Profile_Picture" class="profile-picture">
+                <p class="stylist-comment">{{ stylists.comment }}</p>
+              </div>
+            </div>
+          {% endfor %}
     </div>
   </div>
 </div>

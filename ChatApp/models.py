@@ -354,6 +354,20 @@ class Message:
        finally:
            db_pool.release(conn)
 
+   @classmethod
+   def get_name_userside(cls, cid):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "SELECT stylist_name FROM customers_stylists AS cs INNER JOIN stylists AS s ON cs.stylist_id = s.stylist_id WHERE customers_stylists_id = %s;" # [hiyo]「WHERE cid = %s」を追記
+               cur.execute(sql, (cid,))
+               chatname = cur.fetchall()
+               return chatname[0]['stylist_name'] if chatname else None
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
 
    @classmethod
    def get_all(cls, cid):

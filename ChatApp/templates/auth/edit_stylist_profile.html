@@ -3,12 +3,12 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
+    <a href="{{ url_for('channels_stylist_view') }}" class="back-button"><span></span></a>
+    <h1 class="auth-title">
+      EDIT<span class="sub-title"> 登録情報修正</span>
+    </h1>
     <div class="auth-form-wrapper">
       <form class="auth-form edit_profile" method="post" enctype="multipart/form-data">
-        <a href="{{ url_for('channels_stylist_view') }}" class="back-button"><span></span></a>
-        <h1 class="auth-title">
-          EDIT<span class="sub-title"> 登録情報修正</span>
-        </h1>
         <div>
           <label for="signup-name-input">Name</label>
           <input

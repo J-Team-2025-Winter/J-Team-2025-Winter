@@ -247,10 +247,11 @@ def detail_user_channel(cid):
 
         #Channel.create(uid, channel_name, channel_description)
     #channel = Channel.find_by_cid(cid)
+    chatname = Message.get_name_userside(cid)
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages_user.html', messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
+    return render_template('messages_user.html', chatname=chatname, messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<int:cid>/messages', methods=['GET'])
