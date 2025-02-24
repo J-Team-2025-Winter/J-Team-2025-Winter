@@ -12,7 +12,7 @@ CREATE TABLE customers (
     customer_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    phone VARCHAR(11) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
     gender ENUM('Male', 'Female', 'Other') NOT NULL
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE stylists (
     stylist_name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    phone VARCHAR(11) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
     gender ENUM('Male', 'Female', 'Other') NOT NULL,
     profile_picture_url VARCHAR(255),
     comment VARCHAR(255)
@@ -69,7 +69,7 @@ CREATE TABLE reservations (
 );
 
 INSERT INTO customers(customer_id, customer_name, email, password, phone, gender) VALUES('00000000-0000-0000-0000-000000000000','Customer Zero','customerzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '00011112222', 'Male');
-INSERT INTO stylists(stylist_id, store_id, stylist_name, email, password, phone, gender, profile_picture_url, comment) VALUES('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '1', 'Stylist Zero','stylistzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '33344445555', 'Male', 'profile-picture', 'hasami no koto nara omakase kudasai');
+INSERT INTO stylists(stylist_id, store_id, stylist_name, email, password, phone, gender, profile_picture_url, comment) VALUES('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', '1', 'Stylist Zero','stylistzero@gmail.com','37268335dd6931045bdcdf92623ff819a64244b53d0e746d438797349d4da578', '33344445555', 'Male', 'animal_chara_lion_biyoushi.png', 'hasami no koto nara omakase kudasai');
 INSERT INTO stores(store_name, address, store_phone, store_hours) VALUES('J-TEAM', '東京都品川区荏原3丁目1-35', 'XXX-XXXX-XXXX','月-金 9:00-20:00');
 INSERT INTO customers_stylists(customer_id, stylist_id) VALUES('00000000-0000-0000-0000-000000000000','aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa');
 -- INSERT INTO channels(id, uid, name, abstract) VALUES(1, '970af84c-dd40-47ff-af23-282b72b7cca8','ぼっち部屋','テストさんの孤独な部屋です');
