@@ -5,7 +5,10 @@
   <div class="auth-container">
     <div class="auth-form-wrapper">
       <form class="auth-form edit_profile" method="post" enctype="multipart/form-data">
-        <h1 class="auth-title">プロフィール編集</h1>
+        <a href="{{ url_for('channels_stylist_view') }}" class="back-button"><span></span></a>
+        <h1 class="auth-title">
+          EDIT<span class="sub-title"> 登録情報修正</span>
+        </h1>
         <div>
           <label for="signup-name-input">Name</label>
           <input
@@ -80,10 +83,7 @@
           />
         </div>
         <div class="auth-button-container">
-          <button class="auth-button pink">更新</button>
-          <a class="switch-auth-mode" href="{{ url_for('channels_stylist_view') }}">
-            戻る
-          </a>
+          <button class="auth-button-touroku">更新</button>
         </div>
       </form>
     </div>

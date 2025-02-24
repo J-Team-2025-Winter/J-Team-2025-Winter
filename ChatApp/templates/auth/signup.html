@@ -3,6 +3,7 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
+    <a href="{{ url_for('login_view') }}" class="back-button"><span></span></a>
     <h1 class="auth-title">
       SIGN UP<span class="sub-title"> 新規ユーザー登録</span>
     </h1>
@@ -63,10 +64,7 @@
           />
         </div>
         <div class="auth-button-container">
-          <button class="auth-button pink">登録</button>
-          <a class="switch-auth-mode" href="{{ url_for('login_view') }}">
-            戻る
-          </a>
+          <button class="auth-button-touroku">登録</button>
         </div>
       </form>
     </div>
