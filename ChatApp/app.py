@@ -249,6 +249,7 @@ def detail_user_channel(cid):
     #channel = Channel.find_by_cid(cid)
     chatname = Message.get_name_userside(cid)
     messages = Message.get_all(cid)
+    messages = messages
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
     return render_template('messages_user.html', chatname=chatname, messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
