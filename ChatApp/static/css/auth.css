@@ -16,6 +16,8 @@
     border-radius:1px;
     display:flex;
     flex-direction:column;
+    justify-content:center;
+    align-items:center;
     background-color: var(--navy_blue);    
 }
 
@@ -31,7 +33,7 @@
 /* タイトル文の説明*/
 .auth-title{
     margin-bottom:20px; 
-    color:var(--white_1)
+    color:var(--white_1);
 }
 
 /* サブタイトルの説明*/
@@ -70,12 +72,11 @@ footer{
     /*footerの装飾*/
     width: 100%;
     background-color: var(--navy_blue);
-   margin-right:20px;
-   margin-bottom:20px;
-   text-align:right ;
-   bottom:0;
-   right:0;
-
+    margin-right:20px;
+    margin-bottom:20px;
+    text-align:right ;
+    bottom:0;
+    right:0;
     padding: 30px 0;
 }
 
