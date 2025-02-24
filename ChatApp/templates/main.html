@@ -3,27 +3,25 @@
 <link rel="stylesheet" href="static/css/main_customer.css">
 {% endblock %} {% block body %}
 <div class="customer_main-wrapper">
-  <div class="main-title">
-    <h1>
-      <span class="h1_logo">J Team</span>
-      <div class="customer_hamburger_menu">
-        <div class="hamburger__icon">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <nav class="nav__links">
-          <a href="{{ url_for('edit_user_profile_view') }}">ユーザー情報修正</a>
-          <a href="{{ url_for('channels_user_view') }}">美容師一覧</a>
-          <a href="{{ url_for('logout') }}">ログアウト</a>
-        </nav>
+  <div class="customer_top_wrapper">
+    <h1>J Team</h1>
+    <div class="customer_hamburger_menu">
+      <div class="hamburger__icon">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav class="nav__links">
+        <a href="{{ url_for('edit_user_profile_view') }}">ユーザー情報修正</a>
+        <a href="{{ url_for('channels_user_view') }}">美容師一覧</a>
+        <a href="{{ url_for('logout') }}">ログアウト</a>
+      </nav>
     </div>
-  </h1>
-
-    <p class="main-title-text"></p>
+  </div>
     <div class="customer_main-container">
-    <img class="main_img" src="static/img/Top.jpg" alt="ページを表示できません">
+      <img class="main_img" src="static/img/Top.jpg" alt="ページを表示できません">
       <br><br>
+      
       <h2>Access</h2>
       <dl class="menu__list">
       <p class="access__menu">Adress</p>
@@ -38,29 +36,29 @@
 
       <h2>Menu</h2>
       <br>
-      <h3>CUT</h3>
+        <h3>CUT</h3>
           <div class="menu__item">
-              <dt>カット</dt>
-              <dd>￥5000</dd>
+            <dt>カット</dt>
+             <dd>￥5000</dd>
           </div>
           <div class="menu__def">
-      <dt>シャンプー、ブロー込み</dt>
+             <dt>シャンプー、ブロー込み</dt>
           </div>
           <div class="menu__item">
-              <dt>スクールカット</dt>
-              <dd>￥3000</dd>
+            <dt>スクールカット</dt>
+            <dd>￥3000</dd>
           </div>
           <div class="menu__def">
-            <dt>高校生以下</dt>
+             <dt>高校生以下</dt>
           </div>
 
-      <hr class="menu__hr">
+          <hr class="menu__hr">
 
-      <h3>COLOR</h3>
-        <div class="menu__item">
-          <dt>ハーブカラー（フル）</dt>
-          <dd> 要問合せ</dd>
-        </div>
+        <h3>COLOR</h3>
+          <div class="menu__item">
+            <dt>ハーブカラー（フル）</dt>
+            <dd> 要問合せ</dd>
+          </div>
           <div class="menu__item_small">
             <dt>クオルシアカラーに変更</dt>
             <dd>+￥2000</dd>
@@ -68,62 +66,59 @@
           <div class="menu__item_small">
             <dt>オーガニックカラーに変更</dt>
             <dd>+￥3500</dd>
+           </div>
+         <div class="menu__item">
+           <dt>ハーブカラー（リタッチ）</dt>
+           <dd> 要問合せ</dd>
+         </div>
+         <div class="menu__item_small">
+           <dt>クオルシアカラーに変更</dt>
+           <dd>+￥2000</dd>
+         </div>
+         <div class="menu__item_small">
+           <dt>オーガニックカラーに変更</dt>
+           <dd>+￥3500</dd>
           </div>
-        <div class="menu__item">
-          <dt>ハーブカラー（リタッチ）</dt>
-          <dd> 要問合せ</dd>
-        </div>
-        <div class="menu__item_small">
-          <dt>クオルシアカラーに変更</dt>
-          <dd>+￥2000</dd>
-        </div>
-        <div class="menu__item_small">
-          <dt>オーガニックカラーに変更</dt>
-          <dd>+￥3500</dd>
-        </div>
       
-      <div class="menu__item">
-        <dt>イヤリングカラー</dt>
-        <dd>￥4500</dd>
-      </div>
-       <div class="menu__item_small">
-        <dt>S/Bロング料金なし</dt>
-       </div>
+          <div class="menu__item">
+            <dt>イヤリングカラー</dt>
+            <dd>￥4500</dd>
+          </div>
+         <div class="menu__item_small">
+            <dt>S/Bロング料金なし</dt>
+         </div>
+          <div class="menu__item">
+            <dt>ケアブリーチ&カラー</dt>
+            <dd>￥11000</dd>
+          </div>
+            <div class="menu__item_small">
+            <dt>S/Bロング料金なし</dt>
+          </div>
+          <div class="menu__item">
+            <dt>インナーカラー</dt>
+            <dd>￥4500</dd>
+          </div>
+         <div class="menu__item_small">
+            <dt>S/Bロング料金なし</dt>
+          </div>
+        <hr class="menu__hr">
 
-      <div class="menu__item">
-        <dt>ケアブリーチ&カラー</dt>
-        <dd>￥11000</dd>
-      </div>
-        <div class="menu__item_small">
-         <dt>S/Bロング料金なし</dt>
-        </div>
-  
-      <div class="menu__item">
-        <dt>インナーカラー</dt>
-        <dd>￥4500</dd>
-      </div>
-      <div class="menu__item_small">
-        <dt>S/Bロング料金なし</dt>
-       </div>
-    <hr class="menu__hr">
-
-    <h3>PARMA</h3>
-    <div class="menu__item">
-      <dt>パーマ</dt>
-      <dd>￥8000</dd>
-    </div>
-    <div class="menu__item">
-      <dt>デジタルパーマ</dt>
-      <dd>￥12000</dd>
-    </div>
-    <div class="menu__item">
-      <dt>ストレートパーマ</dt>
-      <dd>￥7000</dd>
-    </div>
-  <hr class="menu__hr">
-  </div>
-  </dl>
+        <h3>PARMA</h3>
+          <div class="menu__item">
+            <dt>パーマ</dt>
+            <dd>￥8000</dd>
+          </div>
+          <div class="menu__item">
+            <dt>デジタルパーマ</dt>
+            <dd>￥12000</dd>
+          </div>
+          <div class="menu__item">
+            <dt>ストレートパーマ</dt>
+            <dd>￥7000</dd>
+          </div>
+        <hr class="menu__hr">
+      </dl>
+ </div>
 </div>
-</div>
-</div>
+<script src="static\js\hamburger-menu.js"></script> 
 {% endblock %}

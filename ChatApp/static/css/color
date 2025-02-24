@@ -1,5 +1,7 @@
 :root{
     --navy_blue:#213555;
     --white_1:#FAFAFA;
-    --white_2:
+    --black:#3D3D3D;
+    --gray:#494848;
+    --brown:#D8C4B6;
 }
