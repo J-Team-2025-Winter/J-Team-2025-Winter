@@ -9,12 +9,12 @@
       message.uid == uid %}
       <div class="my-messages">
         <p class="sent_at">{{ message.sent_at }}</p>
-        <p class="box box-right">{{ message.content }}</p>
+        <p class="box box-right">{{ message.content | safe }}</p>
       </div>
       {% else %}
       <div class="messages">
         <p class="sent_at">{{ message.sent_at }}</p>
-        <p class="box box-left">{{ message.content }}</p>
+        <p class="box box-left">{{ message.content | safe }}</p>
       </div>
       {% endif %} {% endfor %} {% else %}
       <p id="no-message">まだメッセージがありません</p>
@@ -32,8 +32,8 @@
       <a class="back-to-channels_user" href="{{ url_for('channels_user_view') }}">
         戻る
       </a>
-      <a class="view-template" href="{{ url_for('main_view') }}">
-        テンプレート（未完成）
+      <a class="view-template" href="{{ url_for('template_view', cid=cid) }}">
+        テンプレート
       </a>
       <a class="view-make_reservation" href="{{ url_for('make_reservation_view', cid=cid) }}">
         予約
