@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="static/css/channels.css">
 {% endblock %} {% block body %}
   <div class="main-title">
-    <div class="channels_stylists_wrapper">
+    <div class="channels_stylists_mainwrapper">
         <h1>
           <span class="h1_logo">J Team</span>
           <div class="customer_hamburger_menu">
@@ -20,14 +20,17 @@
         </div>
       </h1>
     <div class="channels_syilist_container">
-      <div class="channels_sylist_title">
-        <h2>お客様一覧</h2>
-          {% for users in channels_user %}
-            <p>
-              {{ users.customer_name }}<br>
-            </p>
-          {% endfor %}
+      <div class="channels_syilist_container">
+        <div class="channels_sylist_title">
+          <h2>お客様一覧</h2>
+            {% for users in channels_user %}
+              <p>
+                {{ users.customer_name }}<br>
+              </p>
+            {% endfor %}
+        </div>
       </div>
-    </div>
+    </div>\
 </div>
+<script src="static/js/hamburger-menu.js"></script> 
 {% endblock %}

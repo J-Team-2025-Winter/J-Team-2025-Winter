@@ -3,12 +3,12 @@
 {% endblock %} {% block body %}
 <div class="auth-wrapper">
   <div class="auth-container">
-    <div class="auth-form-wrapper">
-      <form class="auth-form edit_profile" method="post" enctype="multipart/form-data">
-        <a class="back-button" href="{{ url_for('main_view') }}"><span></span></a>
-         <h1 class="auth-title">
-          EDIT<span class="sub-title"> 登録情報修正</span>
-        </h1>
+    <a class="back-button" href="{{ url_for('main_view') }}"><span></span></a>
+    <h1 class="auth-title">
+      EDIT<span class="sub-title"> 登録情報修正</span>
+     </h1>
+    <form class="auth-form edit_profile" method="post" enctype="multipart/form-data">
+      <div class="auth-form-wrapper">
         <div>
           <label for="signup-name-input">Name</label>
           <input
@@ -30,7 +30,7 @@
         <div>
           <label for="signup-phone-input">TEL</label>
           <input
-            type="number"
+            type="text"
             placeholder="PhoneNumber"
             name="phone"
             id="signup-phone-input"
@@ -41,20 +41,20 @@
           <select id ="signup-gender" name="gender">
           <option value="Male">Male</option>
           <option value="Female">Female</option>
-        </select>
+          </select>
         </div>
         <div>
           <label for="signup-password-input">Password</label>
           <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            id="signup-password-input"
+           type="password"
+           placeholder="Password"
+           name="password"
+          id="signup-password-input"
           />
         </div>
         <div>
           <label for="signup-password-confirmation-input">
-            Password（確認）
+          Password（確認）
           </label>
           <input
             type="password"
@@ -66,8 +66,8 @@
         <div class="auth-button-container">
           <button class="auth-button-touroku">更新</button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

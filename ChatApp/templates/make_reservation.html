@@ -2,6 +2,9 @@
 <title>reservation</title>
 {% endblock %} {% block body %}
 <div>
+<a href="{{ url_for('detail_user_channel', cid=cid) }}" class="back-button"><span></span></a>
+</div>
+<div>
     <div>
       <p>日付を選択してください</p>
     </div>
@@ -10,11 +13,6 @@
         <input type="date" name="date" required>
         <button type="submit">決定</button>
       </form>
-    </div>
-    <div>
-      <a href="{{ url_for('detail_user_channel', cid=cid) }}">
-        戻る
-      </a>
     </div>
 </div>
 {% endblock %}
