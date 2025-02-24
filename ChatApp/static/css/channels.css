@@ -71,7 +71,7 @@ h1{
     text-align:center;
     align-items:center;
     color:var(--white_1);
-    background-color:var(--navy_blue);
+    background-color:var(--white_1);
     padding:0px;
 }
 
@@ -206,12 +206,15 @@ h1{
     background-color:var(--brown2);
     color:var(--brown);
     box-shadow:0 0 10px var(--black);
-    border-radius:5px;
+    border-radius:1px;
+    border:1px solid ver(--navy_blue);
     position:absolute;
     top:50px;
-    height:50vh;
+    height:30wv;
     right:0;
-    width:200px;
+    width:50%;
+    justify-content: space-evenly;
+    z-index: 10;
 }
   
 .customer_hamburger_menu.active .nav__links {
@@ -236,7 +239,7 @@ h1{
 
 h1{
     align-items:left;
-    color:var(--white_1);
+    color:var(--);
     background-color:var(--navy_blue);
     flex-grow: 1; 
     font-size:24px;

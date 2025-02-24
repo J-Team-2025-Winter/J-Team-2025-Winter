@@ -1,18 +1,31 @@
 {% extends 'base.html' %} {% block title %}
 <title>reservation</title>
 {% endblock %} {% block body %}
-<div>
-<a href="{{ url_for('detail_user_channel', cid=cid) }}" class="back-button"><span></span></a>
-</div>
-<div>
+<div class="main-container">
+  <div class="main-wrapper">
     <div>
-      <p>日付を選択してください</p>
+      <a href="{{ url_for('detail_user_channel', cid=cid) }}" class="back-button"><span></span></a>
     </div>
-    <div>
-      <form action="{{ url_for('make_reservation_view', cid=cid) }}" method="POST">
-        <input type="date" name="date" required>
-        <button type="submit">決定</button>
-      </form>
+      <div class="reservation-container">
+        <div class="titlename">
+         <h1>RESERVATION</h1>
+        </div>
+        <div class="reservation-main">
+          <p class="">日付を選択してください</p>
+          <div class="custom-reservation-form">
+            <form action="{{ url_for('make_reservation_view', cid=cid) }}" method="POST">
+              <label for "date" >予約日 </label>
+              <input type="date" name="date" required><br>
+              <label for "time" >予約時間 </label>
+              <input type="time" name="time" required><br>
+              <div class="make-reserbation-form">
+                <button type="submit" class="make-reservation">予約する</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}
