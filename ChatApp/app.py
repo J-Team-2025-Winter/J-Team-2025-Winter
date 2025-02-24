@@ -255,7 +255,7 @@ def detail_user_channel(cid):
     return render_template('messages_user.html', chatname=chatname, messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
-@app.route('/channels_stylist/<cid>/messages', methods=['GET'])
+@app.route('/channels_stylist/<int:cid>/messages', methods=['GET'])
 def detail_stylist_channel(cid):
     uid = session.get('uid')
     if uid is None:
@@ -265,7 +265,7 @@ def detail_stylist_channel(cid):
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages.html', messages=messages, uid=uid)
+    return render_template('messages_stylist.html', messages=messages, uid=uid, cid=cid)
 
 
 
@@ -279,7 +279,7 @@ def create_user_message(cid):
     message = request.form.get('message')
 
     if message:
-        Message.create(message, uid, cid)
+        Message.create(uid, cid, message)
 
     return redirect('/channels_user/{cid}/messages'.format(cid = cid))
 
