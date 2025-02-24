@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>カレンダー</title>
+    <style>
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid black; padding: 10px; text-align: center; }
+        .selected { background-color: yellow; }
+    </style>
+</head>
+<body>
+    <h1>カレンダー</h1>
+    <form method="POST">
+        <div>{{ calendar|safe }}</div>
+        <input type="hidden" name="date" value="{{ selected_date }}">
+        <button type="submit">日付を選択</button>
+    </form>
+    {% if selected_date %}
+        <h2>選択した日付: {{ selected_date }}</h2>
+    {% endif %}
+    <script>
+        document.querySelectorAll('td').forEach(td => {
+            td.addEventListener('click', function() {
+                const date = this.innerText;
+                const month = "{{ month }}";
+                const year = "{{ year }}";
+                const fullDate = year + '-' + month + '-' + date;
+                document.querySelector('input[name="date"]').value = fullDate;
+                document.querySelectorAll('td').forEach(cell => cell.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

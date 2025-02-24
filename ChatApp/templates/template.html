@@ -3,11 +3,13 @@
 {% endblock %} {% block body %}
 <div>
     <div>
-      <p>日付を選択してください</p>
+      <p>テンプレート</p>
     </div>
     <div>
-      <form action="{{ url_for('make_reservation_view', cid=cid) }}" method="POST">
-        <input type="date" name="date" required>
+      <form action="{{ url_for('template_view', cid=cid) }}" method="POST">
+        <input type="text" placeholder="CUT" name="cut"><br>
+        <input type="text" placeholder="COLOR" name="color"><br>
+        <input type="text" placeholder="PARMA" name="parma"><br>
         <button type="submit">決定</button>
       </form>
     </div>

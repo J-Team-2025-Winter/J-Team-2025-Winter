@@ -1,4 +1,4 @@
-.main-container{
+.customer_main-wrapper{
     width:100vw;
     min-height:100vh;
     display:flex;
@@ -6,25 +6,192 @@
     align-items:center;
     background-color: var(--navy_blue);
 }
-h1{
-    font-size:32px;
-    color:var(--black);
-    background-color:var(--white_1);
-    padding:10px;
+.customer_main-container{
+    width:auto;
+    height: auto;
+    margin:auto;
+    border-radius:1px;
+    flex-direction:column;
+    align-items:center;
+    display:flex;
+    padding:0px;
+    background-color: var(--white_1); 
+    padding-bottom: 100px;
 }
 
-.main-title{
+h1{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    color:var(--black);
+    background-color:var(--white_1);
+    padding:0px;
+}
 
+h2{
+    font-size:25px;
+    color:var(--black);
+    background-color:var(--white_1);
+    padding:0px;
+    margin-top:10px;
+    text-align: center;
+}
+
+h3{
+    font-size:20px;
+    color:var(--black);
+    background-color:var(--white_1);
+    padding:0px;
+    text-align: center;
+}
+
+.menu__list {
+    margin: 0 0 0;
+}
+.access__menu {
+    text-size:12px;
+    text-align: center;
+}
+.access__def {
+    text-size:10px;
+    text-align: center;
+}
+
+.menu__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.menu__item dt {
+    font-size: 18px;
+    line-height: 30px;
+    text-align: left;
+}
+
+.menu__item dd {
+    font-size: 14px;
+    line-height: 30px;
+    margin: 0px; 
+    text-align: right;
+}
+
+.menu__def{
+    font-size:12px;
+}
+
+.menu__item_small{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0px;
+    font-size:12px;
+} 
+
+.menu__item_small dt{
+    line-height: 30px; 
+    text-align: left;
+    padding-bottom: 0px;
+}
+.menu__item_small dd {
+    line-height: 30px;
+    margin: 2; 
+    text-align: right;
+    padding-bottom: 0px;
+}
+
+.menu__hr {
+    border: none;
+    border-top: 1px solid;
+    border-color:var(--gray);
+    margin: 16px 0;
+}
+
+.main_img {
+    opacity:0.8; 
+    width:100%;
+    height:auto;
+    margin:0%
 }
 
 :root{
     --navy_blue:#213555;
     --white_1:#FAFAFA;
     --black:#3D3D3D;
+    --gray:#494848;
+    --brown:#D8C4B6;
 }
 
-/*　以下でボタンを押下したら色が変わるJavascriptを入れたい。
-/*.main-button-container a.active {
-/*       background-color: #f0f0f0; /* アクティブなリンクの背景色 */
-/*       color: #000; /* アクティブなリンクの文字色 */
-/*      }
+
+.h1_logo {
+    font-size: 42px;
+    font-weight: bold;
+    text-align: left;
+    padding:19px;
+ }
+
+.hamburger__icon{
+    aspect-ratio: 1;
+    width:80px;
+    display:block;
+    border:none;
+    cursor: pointer;
+    display:flex;
+    background-color:var(--brown);
+    flex-direction:column;
+    justify-content:right;
+    align-items:right;
+    position:relative;
+}
+.hamburger__icon span {
+    width: 30px;
+    height: 3px;
+    gap: 1px;
+    background:var(--black);
+    transition: transform 0.3s, opacity 0.3s;
+    position: absolute;
+  }
+  
+  /* 1本目（上の線） */
+  .hamburger__icon span:nth-child(1) {
+    top: 0;
+    justify-content:center;
+  }
+
+  /* 2本目（中央の線） */
+  .hamburger__icon span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    justify-content:center;
+  }
+  /* 3本目（下の線） */
+    .hamburger__icon span:nth-child(3) {
+    bottom: 0;
+  }
+
+  
+/* メニューが開いたときのアイコンのアニメーション */
+　.customer_hamburger_menu.active .hamburger__icon span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+  }
+  
+  .customer_hamburger_menu.active .hamburger__icon span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .customer_hamburger_menu.active .hamburger__icon span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+  }
+  
+  /* メニューの表示/非表示 */
+  .nav__links {
+    display: block;
+  /*  display: none; */
+  }
+  
+  .customer_hamburger_menu.active .nav__links {
+    display: block;
+  }
+
+

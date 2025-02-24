@@ -6,7 +6,7 @@ import uuid
 import hashlib
 import calendar
 
-from models import Customer, Stylist, Channel, Message
+from models import Customer, Stylist, Channel, Message, Reservation
 from datetime import datetime
 
 # 定数定義
@@ -28,7 +28,15 @@ def index():
     uid = session.get('uid')
     if uid is None:
         return redirect(url_for('login_view'))
-    return redirect(url_for('main_view'))
+    else:
+        registered_customer = Customer.find_by_uid(uid)
+        registered_stylist = Stylist.find_by_uid(uid)
+        if registered_customer:
+            return redirect(url_for('main_view'))
+        elif registered_stylist:
+            return redirect(url_for('channels_stylist_view'))
+        else:
+            return redirect(url_for('login_view'))
 
 
 # サインアップページの表示(顧客)
@@ -161,8 +169,18 @@ def login_staff_process():
 # ログアウト
 @app.route('/logout')
 def logout():
+    uid = session.get('uid')
+    registered_customer = Customer.find_by_uid(uid)
+    registered_stylist = Stylist.find_by_uid(uid)
+    
     session.clear()
-    return redirect(url_for('login_view'))
+
+    if registered_customer:
+        return redirect(url_for('login_view'))
+    elif registered_stylist:
+        return redirect(url_for('login_staff_view'))
+    else:
+        return redirect(url_for('login_view'))
 
 
 # ユーザーTOPページの表示
@@ -232,7 +250,7 @@ def detail_user_channel(cid):
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages.html', messages=messages, uid=uid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
+    return render_template('messages_user.html', messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<cid>/messages', methods=['GET'])
@@ -259,9 +277,9 @@ def create_user_message(cid):
     message = request.form.get('message')
 
     if message:
-        Message.create(uid, cid, message)
+        Message.create(message, uid, cid)
 
-    return redirect('/channels/{cid}/messages'.format(cid = cid))
+    return redirect('/channels_user/{cid}/messages'.format(cid = cid))
 
 #店舗側/美容師側メッセージの投稿
 @app.route('/channels_stylist/<cid>/messages',methods=['POST'])
@@ -278,53 +296,105 @@ def create_stylist_messages(cid):
     return redirect('/channels_stylist/{cid}/messages'.format(cid = cid))
 
 
+# 顧客プロフィール編集ページの表示
+@app.route('/edit_user_profile', methods=['GET'])
+def edit_user_profile_view():
+    return render_template('auth/edit_user_profile.html')
+
+# 顧客プロフィールの更新処理
+@app.route('/edit_user_profile', methods=['POST'])
+def edit_user_profile_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
+    password = request.form.get('password').strip()
+    passwordConfirmation = request.form.get('password-confirmation').strip()
+
+    if password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
+    elif email != "" and re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = session.get('uid')
+        Customer.edit_profile(uid, name, email, phone, gender, password)
+        return render_template('main.html')
+    return redirect(url_for('edit_user_profile_view'))
+
 # 美容師プロフィール編集ページの表示
-@app.route('/edit_profile', methods=['GET'])
-def edit_profile_view():
-    return render_template('auth/edit_profile.html')
+@app.route('/edit_stylist_profile', methods=['GET'])
+def edit_stylist_profile_view():
+    return render_template('auth/edit_stylist_profile.html')
 
-# 美容師プロフィールの登録処理
-@app.route('/edit_profile', methods=['POST'])
-def edit_profile_process():
-    if 'file' not in request.files:
-        flash('ファイルがありません')
-        return redirect(url_for('edit_profile_view'))
+# 美容師プロフィールの更新処理
+@app.route('/edit_stylist_profile', methods=['POST'])
+def edit_stylist_profile_process():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    phone = request.form.get('phone')
+    gender = request.form.get('gender')
+    password = request.form.get('password').strip()
+    passwordConfirmation = request.form.get('password-confirmation').strip()      
     file = request.files['file']
-    filename = file.filename
-    app.config['uploads'] = 'uploads'
-    file.save(os.path.join(app.config['uploads'], filename))
-
     comment = request.form.get('comment')
 
-    uid = session.get('uid')
-    Stylist.edit_profile(uid, filename, comment)
-    return render_template('channels_stylist.html')
+    if password != passwordConfirmation:
+        flash('二つのパスワードの値が違っています')
+    elif email != "" and re.match(EMAIL_PATTERN, email) is None:
+        flash('正しいメールアドレスの形式ではありません')
+    else:
+        uid = session.get('uid')
+        Stylist.edit_profile(uid, name, email, phone, gender, password, file, comment)
+        return render_template('channels_stylist.html')
+    return redirect(url_for('edit_stylist_profile_view'))
 
 
 # 予約ページの表示
-@app.route('/make_reservation', methods=['GET', 'POST'])
-def make_reservation_view():
-    now = datetime.now()
-    year = now.year
-    month = now.month
-    selected_date = None
+@app.route('/make_reservation/<cid>', methods=['GET', 'POST'])
+def make_reservation_view(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
 
     if request.method == 'POST':
+        uid = session.get('uid')
         selected_date = request.form.get('date')
+        Reservation.create(uid, selected_date, cid)
+        message = f"{selected_date}で予約しました！"
+        Message.create(message, uid, cid)
+        return redirect(url_for('detail_user_channel', cid=cid))
 
-    cal = calendar.HTMLCalendar().formatmonth(year, month)
-    return render_template('make_reservation.html', calendar=cal, selected_date=selected_date)
+    return render_template('make_reservation.html', cid=cid)
 
 # 予約確認ページの表示（顧客）
-@app.route('/user_reservation', methods=['GET'])
-def user_reservation_view():
-    return render_template('user_reservation.html')
+# @app.route('/user_reservation', methods=['GET'])
+# def user_reservation_view():
+#     return render_template('user_reservation.html')
 
 # 予約確認ページの表示（店舗）
 @app.route('/stylist_reservation', methods=['GET'])
 def stylist_reservation_view():
-    return render_template('stylist_reservation.html')
+    reservations = Reservation.get_all_reservations()
+    return render_template('stylist_reservation.html', reservations=reservations)
 
+
+# テンプレートの表示
+@app.route('/template/<cid>', methods=['GET', 'POST'])
+def template_view(cid):
+    uid = session.get('uid')
+    if uid is None:
+        return redirect(url_for('login_view'))
+
+    if request.method == 'POST':
+        uid = session.get('uid')
+        cut = request.form.get('cut')
+        color = request.form.get('color')
+        parma = request.form.get('parma')
+        message = f"CUT：{cut}\nCOLOR：{color}\nPARMA：{parma}".replace("\n", "<br>")
+        Message.create(message, uid, cid)
+        return redirect(url_for('detail_user_channel', cid=cid))
+
+    return render_template('template.html', cid=cid)
 
 
 if __name__ == '__main__':

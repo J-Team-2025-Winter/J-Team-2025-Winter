@@ -1,6 +1,11 @@
-from flask import abort
+from flask import Flask, abort
 import pymysql
 from util.DB import DB
+import hashlib
+import os
+
+
+app = Flask(__name__)
 
 
 # 初期起動時にコネクションプールを作成し接続を確立
@@ -39,6 +44,58 @@ class Customer:
        finally:
            db_pool.release(conn)
 
+   @classmethod
+   def find_by_uid(cls, uid):
+       conn = db_pool.get_conn()
+       try:
+               with conn.cursor() as cur:
+                   sql = "SELECT * FROM customers WHERE customer_id=%s;"
+                   cur.execute(sql, (uid,))
+                   customer = cur.fetchone()
+               return customer
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
+   def edit_profile(cls, uid, name, email, phone, gender, password):
+       # set_clauseとparamsを定義する 
+       set_clause = []
+       params = []
+
+       if name: #「nameが空文字列、None、Falseでない場合」のPythonicな書き方
+           set_clause.append("customer_name=%s") # set_clauseに「customer_name=%s」を追加する
+           params.append(name) # paramsに「name」を追加する
+       if email:
+           set_clause.append("email=%s")
+           params.append(email)
+       if phone:
+           set_clause.append("phone=%s")
+           params.append(phone)
+       if gender:
+           set_clause.append("gender=%s")
+           params.append(gender)
+       if password:
+           password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+           set_clause.append("password=%s")
+           params.append(password)
+
+       if set_clause:
+           conn = db_pool.get_conn()
+           try:
+                with conn.cursor() as cur: #「', '.join(set_clause)」で、set_clauseに追加したものを「, 」で結合する
+                    sql = f"UPDATE customers SET {', '.join(set_clause)} WHERE customer_id=%s;"
+                    params.append(uid)
+                    cur.execute(sql, params) # paramsに追加したものが「%s」に充てられる
+                    conn.commit()
+           except pymysql.Error as e:
+                print(f'エラーが発生しています：{e}')
+                abort(500)
+           finally:
+                db_pool.release(conn)
+
 # 美容師クラス
 class Stylist:
    @classmethod
@@ -46,15 +103,14 @@ class Stylist:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password) VALUES (%s, %s, %s, %s, %s, %s);"
-               cur.execute(sql, (stylist_id, name, email, phone, gender, password,))
+               sql = "INSERT INTO stylists (stylist_id, stylist_name, email, phone, gender, password, profile_picture_url) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+               cur.execute(sql, (stylist_id, name, email, phone, gender, password, 'No Images',))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
            abort(500)
        finally:
            db_pool.release(conn)
-
 
    @classmethod
    def find_by_email(cls, email):
@@ -72,18 +128,65 @@ class Stylist:
            db_pool.release(conn)
 
    @classmethod
-   def edit_profile(cls, uid, filename, comment):
+   def find_by_uid(cls, uid):
        conn = db_pool.get_conn()
        try:
-           with conn.cursor() as cur:
-               sql = "UPDATE stylists SET profile_picture_url=%s, comment=%s WHERE stylist_id=%s;"
-               cur.execute(sql, (filename, comment, uid,))
-               conn.commit()
+               with conn.cursor() as cur:
+                   sql = "SELECT * FROM stylists WHERE stylist_id=%s;"
+                   cur.execute(sql, (uid,))
+                   stylist = cur.fetchone()
+               return stylist
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
            abort(500)
        finally:
            db_pool.release(conn)
+
+   @classmethod
+   def edit_profile(cls, uid, name, email, phone, gender, password, file, comment):
+       # set_clauseとparamsを定義する 
+       set_clause = []
+       params = []
+
+       if name: #「nameが空文字列、None、Falseでない場合」のPythonicな書き方
+           set_clause.append("stylist_name=%s") # set_clauseに「customer_name=%s」を追加する
+           params.append(name) # paramsに「name」を追加する
+       if email:
+           set_clause.append("email=%s")
+           params.append(email)
+       if phone:
+           set_clause.append("phone=%s")
+           params.append(phone)
+       if gender:
+           set_clause.append("gender=%s")
+           params.append(gender)
+       if password:
+           password = hashlib.sha256(password.encode('utf-8')).hexdigest()
+           set_clause.append("password=%s")
+           params.append(password)
+       if file:
+           filename = file.filename
+           app.config['uploads'] = 'uploads'
+           file.save(os.path.join(app.config['uploads'], filename))
+           set_clause.append("profile_picture_url=%s")
+           params.append(filename)
+       if comment:
+           set_clause.append("comment=%s")
+           params.append(comment)
+
+       if set_clause:
+           conn = db_pool.get_conn()
+           try:
+                with conn.cursor() as cur: #「', '.join(set_clause)」で、set_clauseに追加したものを「, 」で結合する
+                    sql = f"UPDATE stylists SET {', '.join(set_clause)} WHERE stylist_id=%s;"
+                    params.append(uid)
+                    cur.execute(sql, params) # paramsに追加したものが「%s」に充てられる
+                    conn.commit()
+           except pymysql.Error as e:
+                print(f'エラーが発生しています：{e}')
+                abort(500)
+           finally:
+                db_pool.release(conn)
 
 
 # チャンネルクラス
@@ -178,7 +281,7 @@ class Channel:
         conn = db_pool.get_conn()
         try:
             with conn.cursor() as cur:
-                sql = "SELECT * FROM customers_stylists WHERE customers_stylists_id=%s;"
+                sql = "SELECT * FROM customers_stylists WHERE cid=%s;"
                 cur.execute(sql, (cid,))
                 channel = cur.fetchone()
                 return channel
@@ -238,12 +341,12 @@ class Channel:
 # メッセージクラス
 class Message:
    @classmethod
-   def create(cls, message_id, content, image_url, sent_at, reservation_id, customers_stylists_id):
+   def create(cls, message, uid, cid):
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "INSERT INTO Messages(message_id, content, image_url, sent_at, reservation_id, customers_stylists_id) VALUES(%s, %s, %s, %s, %s, %s);"
-               cur.execute(sql, (message_id, content, image_url, sent_at, reservation_id, customers_stylists_id,))
+               sql = "INSERT INTO messages(content, uid, cid) VALUES(%s, %s, %s);"
+               cur.execute(sql, (message, uid, cid,))
                conn.commit()
        except pymysql.Error as e:
            print(f'エラーが発生しています：{e}')
@@ -257,7 +360,7 @@ class Message:
        conn = db_pool.get_conn()
        try:
            with conn.cursor() as cur:
-               sql = "SELECT * FROM Messages WHERE customers_stylists_id = %s;" # [hiyo]「WHERE customers_stylists_id = %s」を追記
+               sql = "SELECT * FROM messages WHERE cid = %s;" # [hiyo]「WHERE cid = %s」を追記
                cur.execute(sql, (cid,))
                messages = cur.fetchall()
                return messages
@@ -281,3 +384,39 @@ class Message:
 #            abort(500)
 #        finally:
 #            db_pool.release(conn)
+
+# 予約クラス
+class Reservation:
+   @classmethod
+   def create(cls, uid, selected_date, cid):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = """
+               INSERT INTO reservations(customer_id, stylist_id, reservation_date)
+               SELECT %s, cs.stylist_id, %s
+               FROM customers_stylists AS cs
+               WHERE customers_stylists_id = %s;
+               """
+               cur.execute(sql, (uid, selected_date, cid))
+               conn.commit()
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
+   def get_all_reservations(cls):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "SELECT * FROM reservations AS r INNER JOIN customers AS c ON r.customer_id = c.customer_id ORDER BY reservation_date DESC;"
+               cur.execute(sql)
+               reservations = cur.fetchall()
+               return reservations
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
