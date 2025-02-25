@@ -347,7 +347,7 @@ def edit_stylist_profile_process():
     else:
         uid = session.get('uid')
         Stylist.edit_profile(uid, name, email, phone, gender, password, file, comment)
-        return render_template('channels_stylist.html')
+        return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('edit_stylist_profile_view'))
 
 
