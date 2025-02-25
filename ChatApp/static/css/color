@@ -4,4 +4,5 @@
     --black:#3D3D3D;
     --gray:#494848;
     --brown:#D8C4B6;
+    --brown2:#F5EFE7;
 }
