@@ -249,6 +249,7 @@ def detail_user_channel(cid):
     #channel = Channel.find_by_cid(cid)
     chatname = Message.get_name_userside(cid)
     messages = Message.get_all(cid)
+    messages = messages
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
     return render_template('messages_user.html', chatname=chatname, messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
@@ -346,7 +347,7 @@ def edit_stylist_profile_process():
     else:
         uid = session.get('uid')
         Stylist.edit_profile(uid, name, email, phone, gender, password, file, comment)
-        return render_template('channels_stylist.html')
+        return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('edit_stylist_profile_view'))
 
 
