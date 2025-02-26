@@ -1,8 +1,10 @@
 {% extends 'base.html' %} {% block title %}
 <title>chatroom</title>
+<link rel="stylesheet" href="/static/css/messages.css">
 {% endblock %} {% block body %}
 <div class="main-container">
-  <a class="back-to-channels_user" href="{{ url_for('channels_user_view') }}" class="back-button"><span></span></a>
+  <!--<a class="back-to-channels_user" href="{{ url_for('channels_user_view') }}" class="back-button"><span></span></a>
+  -->
   <div class="main-wrapper">
     <div id="chat-header">
       <p class="channel-title-text detail-title">お客様相談室</p>
@@ -10,13 +12,13 @@
       {% if messages|length > 0 %} {% for message in messages %} {% if
       message.uid == uid %}
       <div class="my-messages">
-        <p class="sent_at">{{ message.sent_at }}</p>
         <p class="box box-right">{{ message.content | safe }}</p>
+        <p class="sent_at">{{ message.sent_at }}</p>
       </div>
       {% else %}
       <div class="messages">
-        <p class="sent_at">{{ message.sent_at }}</p>
         <p class="box box-left">{{ message.content | safe }}</p>
+        <p class="sent_at">{{ message.sent_at }}</p>
       </div>
       {% endif %} {% endfor %} {% else %}
       <p id="no-message">まだメッセージがありません</p>
