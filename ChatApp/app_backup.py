@@ -24,15 +24,18 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 # ルートページのリダイレクト処理
 @app.route('/', methods=['GET'])
 def index():
-    cuid = session.get('cuid')
-    stid = session.get('stid')
- 
-    if stid is None:
-        return redirect(url_for('main_view'))
-    elif cuid is None:
-        return redirect(url_for('channels_stylist_view'))
-    else:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
+    else:
+        registered_customer = Customer.find_by_uid(uid)
+        registered_stylist = Stylist.find_by_uid(uid)
+        if registered_customer:
+            return redirect(url_for('main_view'))
+        elif registered_stylist:
+            return redirect(url_for('channels_stylist_view'))
+        else:
+            return redirect(url_for('login_view'))
 
 
 # サインアップページの表示(顧客)
@@ -72,8 +75,8 @@ def signup_process():
         else:
             Customer.create(customer_id, name, email, phone, gender, password)
             Channel.Create_customers_stylists(customer_id)
-            userid = str(customer_id)
-            session['cuid'] = userid
+            UserId = str(customer_id)
+            session['uid'] = UserId
             return redirect(url_for('main_view'))
     return redirect(url_for('signup_process'))
 
@@ -103,8 +106,8 @@ def signup_staff_process():
         else:
             Stylist.create(stylist_id, name, email, phone, gender, password)
             Channel.Create_stylists_customers(stylist_id)
-            userid = str(stylist_id)
-            session['stid'] = userid
+            UserId = str(stylist_id)
+            session['uid'] = UserId
             return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('signup_staff_process'))
 
@@ -136,7 +139,7 @@ def login_process():
             if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['cuid'] = user["customer_id"]
+                session['uid'] = user["customer_id"]
                 return redirect(url_for('main_view'))
     return redirect(url_for('login_view'))
 
@@ -157,7 +160,7 @@ def login_staff_process():
             if hashPassword != user["password"]:
                 flash('パスワードが間違っています！')
             else:
-                session['stid'] = user["stylist_id"]
+                session['uid'] = user["stylist_id"]
                 return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('login_staff_view'))
 
@@ -165,14 +168,15 @@ def login_staff_process():
 # ログアウト
 @app.route('/logout')
 def logout():
-    cuid = session.get('cuid')
-    stid = session.get('stid')
+    uid = session.get('uid')
+    registered_customer = Customer.find_by_uid(uid)
+    registered_stylist = Stylist.find_by_uid(uid)
     
     session.clear()
 
-    if stid is None:
+    if registered_customer:
         return redirect(url_for('login_view'))
-    elif cuid is None:
+    elif registered_stylist:
         return redirect(url_for('login_staff_view'))
     else:
         return redirect(url_for('login_view'))
@@ -187,13 +191,13 @@ def main_view():
 # チャンネル一覧ページの表示（顧客）
 @app.route('/channels_user', methods=['GET'])
 def channels_user_view():
-    cuid = session.get('cuid')
-    if cuid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
     else:
-        channels_stylist = Channel.get_all_stylists(cuid)
+        channels_stylist = Channel.get_all_stylists(uid) #cid渡す
         channels_stylist.reverse()
-        return render_template('channels_user.html', channels_stylist=channels_stylist)
+        return render_template('channels_user.html', channels_stylist=channels_stylist, uid=uid)
 
 
 @app.route('/display_profile/<filename>')
@@ -204,13 +208,13 @@ def display_profile_process(filename):
 # チャンネル一覧ページの表示（店舗）
 @app.route('/channels_stylist', methods=['GET'])
 def channels_stylist_view():
-    stid = session.get('stid')
-    if stid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_staff_view'))
     else:
-        channels_user = Channel.get_all_customers(stid)
+        channels_user = Channel.get_all_customers(uid)
         channels_user.reverse()
-        return render_template('channels_stylist.html', channels_user=channels_user)
+        return render_template('channels_stylist.html', channels_user=channels_user, uid=uid)
 
 #顧客チャンネル一覧後、チャット機能に移行する前の処理
 #@app.route('/channels_user', methods=['POST'])
@@ -236,8 +240,8 @@ def channels_stylist_view():
 #顧客チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_user/<int:cid>/messages', methods=['GET'])#cid→sid(stylist_id), 1.customer_stylistのレコードを作成 2.GETメソッドでメッセージを表示
 def detail_user_channel(cid):
-    cuid = session.get('cuid')
-    if cuid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
 
         #Channel.create(uid, channel_name, channel_description)
@@ -247,34 +251,33 @@ def detail_user_channel(cid):
     messages = messages
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages_user.html', chatname=chatname, messages=messages, cuid=cuid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
+    return render_template('messages_user.html', chatname=chatname, messages=messages, uid=uid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
 
 #店舗チャンネル一覧後、チャット機能に移行する前の処理
 @app.route('/channels_stylist/<int:cid>/messages', methods=['GET'])
 def detail_stylist_channel(cid):
-    stid = session.get('stid')
-    if stid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_staff_view'))
     
     #channel = Channel.find_by_cid(cid)
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages_stylist.html', messages=messages, stid=stid, cid=cid)
+    return render_template('messages_stylist.html', messages=messages, uid=uid, cid=cid)
 
 
 
 #顧客側メッセージの投稿
 @app.route('/channels_user/<cid>/messages', methods=['POST'])
 def create_user_message(cid):
-    cuid = session.get('cuid')
-    if cuid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
     
     message = request.form.get('message')
 
     if message:
-        uid = cuid
         Message.create(message, uid, cid)
 
     return redirect('/channels_user/{cid}/messages'.format(cid = cid))
@@ -282,14 +285,13 @@ def create_user_message(cid):
 #店舗側/美容師側メッセージの投稿
 @app.route('/channels_stylist/<cid>/messages',methods=['POST'])
 def create_stylist_messages(cid):
-    stid = session.get('stid')
-    if stid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('channels_stylist_view'))
     
     message = request.form.get('message')
 
     if message:
-        uid = stid
         Message.create(message, uid, cid)
 
     return redirect('/channels_stylist/{cid}/messages'.format(cid = cid))
@@ -315,8 +317,8 @@ def edit_user_profile_process():
     elif email != "" and re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
-        cuid = session.get('cuid')
-        Customer.edit_profile(cuid, name, email, phone, gender, password)
+        uid = session.get('uid')
+        Customer.edit_profile(uid, name, email, phone, gender, password)
         return render_template('main.html')
     return redirect(url_for('edit_user_profile_view'))
 
@@ -342,8 +344,8 @@ def edit_stylist_profile_process():
     elif email != "" and re.match(EMAIL_PATTERN, email) is None:
         flash('正しいメールアドレスの形式ではありません')
     else:
-        stid = session.get('stid')
-        Stylist.edit_profile(stid, name, email, phone, gender, password, file, comment)
+        uid = session.get('uid')
+        Stylist.edit_profile(uid, name, email, phone, gender, password, file, comment)
         return redirect(url_for('channels_stylist_view'))
     return redirect(url_for('edit_stylist_profile_view'))
 
@@ -351,16 +353,15 @@ def edit_stylist_profile_process():
 # 予約ページの表示
 @app.route('/make_reservation/<cid>', methods=['GET', 'POST'])
 def make_reservation_view(cid):
-    cuid = session.get('cuid')
-    if cuid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
 
     if request.method == 'POST':
-        cuid = session.get('cuid')
+        uid = session.get('uid')
         selected_date = request.form.get('date')
-        Reservation.create(cuid, selected_date, cid)
+        Reservation.create(uid, selected_date, cid)
         message = f"{selected_date}で予約しました！"
-        uid = cuid
         Message.create(message, uid, cid)
         return redirect(url_for('detail_user_channel', cid=cid))
 
@@ -381,13 +382,12 @@ def stylist_reservation_view():
 # テンプレートの表示
 @app.route('/template/<cid>', methods=['GET', 'POST'])
 def template_view(cid):
-    cuid = session.get('cuid')
-    if cuid is None:
+    uid = session.get('uid')
+    if uid is None:
         return redirect(url_for('login_view'))
 
     if request.method == 'POST':
-        cuid = session.get('cuid')
-        uid = cuid
+        uid = session.get('uid')
         cut = request.form.get('cut')
         color = request.form.get('color')
         parma = request.form.get('parma')

@@ -8,7 +8,7 @@
       <p class="channel-title-text detail-title">お客様相談室</p>
     <div id="message-area">
       {% if messages|length > 0 %} {% for message in messages %} {% if
-      message.uid == stid %}
+      message.uid == uid %}
       <div class="my-messages">
         <p class="sent_at">{{ message.sent_at }}</p>
         <p class="box box-right">{{ message.content | safe }}</p>
