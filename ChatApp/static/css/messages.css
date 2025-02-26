@@ -1,0 +1,91 @@
+.channel-title-text.detail-title{
+    background-color: var(--navy_blue);
+    color:var(--white_1);  
+}
+
+.my-messages{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.box{
+    position: relative;
+    width: 70%;
+    margin: 0;
+    padding: 0.7em 0 0.4em 1em;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    white-space: pre-wrap;
+}
+
+.box-right{
+    background-color: var(--brown);
+    margin-left: auto;
+}
+
+.box-right::after {
+    content: "";
+    position: absolute;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 5px 10px 10px;
+    border-color: transparent transparent transparent var(--brown);
+  }
+
+
+.my-messages .sent_at{
+    display: flex;
+    margin-left: auto;
+    font-size: 10px;
+}
+
+
+.messages_user-button-container{
+    text-align: center;
+}
+
+.typing-box{
+    text-align: center;
+}
+
+
+/*テンプレートボタン*/
+.view-template {
+    width:auto;
+    display: inline-block; /*ボタン風に*/
+    padding: 10px 20px; /* 余白 */
+    background-color: var(--brown2);
+    text-decoration: none; /* 下線を消す */
+    font-size: 16px; /* 文字サイズ */
+    color: var(--black);
+    text-align: center; /* テキストを中央揃え */
+    transition: background-color 0.3s, transform 0.2s; /* ホバー時のアニメーション */
+}
+
+/*予約ボタン*/
+.view-make_reservation {
+    width:auto;
+    display: inline-block; /*ボタン風に*/
+    padding: 10px 20px; /* 余白 */
+    background-color: var(--brown);
+    text-decoration: none; /* 下線を消す */
+    font-size: 16px; /* 文字サイズ */
+    color: var(--black);
+    text-align: center; /* テキストを中央揃え */
+    transition: background-color 0.3s, transform 0.2s; /* ホバー時のアニメーション */
+}
+
+:root{
+    --navy_blue:#213555;
+    --white_1:#FAFAFA;
+    --black:#3D3D3D;
+    --gray:#494848;
+    --brown:#D8C4B6;
+    --brown2:#F5EFE7;
+}

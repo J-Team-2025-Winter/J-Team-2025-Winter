@@ -23,13 +23,12 @@
 
 .auth-form-wrapper{
     width:auto;
-    height:auto;
+    height: auto;
     margin:auto;
     border-radius:1px;
     display:flex;
     padding:50px;
-    background-color: var(--white_1);
-    flex-direction:column;    
+    background-color: var(--white_1);    
 }
 
 .auth-form-wrapper-login{
@@ -40,7 +39,6 @@
     display:flex;
     padding:50px;   
 }
-
 /* タイトル文の説明*/
 .auth-title{
     margin-bottom:20px; 
@@ -86,7 +84,7 @@
 
 .auth-button-container{
     justify-content:center;
-    align-items:center;  
+    /*align-items:center*/  
 }
 
 .spin_erase::-webkit-inner-spin-button,
@@ -132,30 +130,11 @@
     border-right-color: var(--brown); /* ホバー時に色変更 */
 }
 
+
+
 .auth-button{
     width:100%;
     margin-bottom:12px;
-}
-
-
-footer{
-    width:100%;
-    background-color: var(--navy_blue);
-    margin:0;
-    text-align:center ;
-    bottom:0;
-    right:0;
-    padding: 20px 0;
-}
-
-select{
-    width:100%;
-    padding:0px;
-    font-size:15px;
-    border:1px solid var(--black);
-    background-color:var(--white_1);
-    appearance:none;
-    cursor:pointer;
 }
 
 /* ログインボタン*/
@@ -168,15 +147,19 @@ select{
     transition: background-color 0.3s; /* ホバー時のアニメーション */
 }
   
+/* ホバー時の色変更 */
+.auth-button.login:hover {
+    background-color: #0056b3;
+}
 
 .auth-button.login:focus {
     box-shadow: 0 0.5em 0.5em -0.4em #000;
     transform: translateY(0.25em);
 }
 
+
 /*新規登録ボタン*/
 .btn {
-    width:auto;
     display: inline-block; /*ボタン風に*/
     padding: 10px 20px; /* 余白 */
     background-color: var(--white_1);
@@ -193,11 +176,19 @@ select{
 }
 
 
+footer{
+    /*footerの装飾*/
+    width: 100%;
+    background-color: var(--navy_blue);
+    margin-right:20px;
+    margin-bottom:20px;
+    text-align:right ;
+    bottom:0;
+    right:0;
+    padding: 30px 0;
+}
+
 :root{
     --navy_blue:#213555;
     --white_1:#FAFAFA;
-    --black:#3D3D3D;
-    --gray:#494848;
-    --brown:#D8C4B6;
-    --brown2:#F5EFE7;
 }

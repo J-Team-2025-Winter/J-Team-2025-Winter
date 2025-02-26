@@ -7,7 +7,7 @@
      src="{url_for('static',filename='img/icon.png')}"
      class="logo"
      />-->
-    <div class="auth-form-wrapper">
+    <div class="auth-form-wrapper-login">
       <form class="auth-form" method="post">
         <h1 class="auth-title">STAFF LOGIN</h1>
         <div>
@@ -29,13 +29,13 @@
           />
         </div>
         <div class="auth-button-container">
-          <button class="auth-button pink">ログイン</button>
-          <a class="switch-auth-mode" href="{{ url_for('signup_staff_view') }}">
+          <button class="auth-button login">ログイン</button>
+          <a class="switch-auth-mode btn" href="{{ url_for('signup_staff_view') }}">
             従業員登録
           </a>
-          <!-- <a class="switch-auth-mode" href="{{ url_for('login_view') }}">
+          <!--<a class="switch-auth-mode" href="{{ url_for('login_view') }}">
             顧客用ログイン
-          </a> -->
+          </a>-->
         </div>
       </form>
     </div>
