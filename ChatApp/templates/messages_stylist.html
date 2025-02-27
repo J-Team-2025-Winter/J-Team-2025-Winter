@@ -7,7 +7,7 @@
   -->
   <div class="main-wrapper">
     <div id="chat-header">
-      <p class="channel-title-text detail-title">お客様相談室</p>
+      <p class="channel-title-text detail-title">{{ chatname }}</p>
     <div id="message-area">
       {% if messages|length > 0 %} {% for message in messages %} {% if
       message.uid == stid %}
