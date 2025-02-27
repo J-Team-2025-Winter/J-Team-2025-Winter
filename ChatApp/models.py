@@ -370,6 +370,21 @@ class Message:
            db_pool.release(conn)
 
    @classmethod
+   def get_name_staffside(cls, cid):
+       conn = db_pool.get_conn()
+       try:
+           with conn.cursor() as cur:
+               sql = "SELECT customer_name FROM customers_stylists AS cs INNER JOIN customers AS c ON cs.customer_id = c.customer_id WHERE customers_stylists_id = %s;"
+               cur.execute(sql, (cid,))
+               chatname = cur.fetchall()
+               return chatname[0]['customer_name'] if chatname else None
+       except pymysql.Error as e:
+           print(f'エラーが発生しています：{e}')
+           abort(500)
+       finally:
+           db_pool.release(conn)
+
+   @classmethod
    def get_all(cls, cid):
        conn = db_pool.get_conn()
        try:

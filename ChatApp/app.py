@@ -253,7 +253,6 @@ def detail_user_channel(cid):
     #channel = Channel.find_by_cid(cid)
     chatname = Message.get_name_userside(cid)
     messages = Message.get_all(cid)
-    messages = messages
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
     return render_template('messages_user.html', chatname=chatname, messages=messages, cuid=cuid, cid=cid)#render_template　処理が終わる→ redirect(WebページのURLを変更した際に、自動的に別のURLに転送する仕組み)　別のURLアクションにリダイレクトできる
@@ -266,10 +265,11 @@ def detail_stylist_channel(cid):
         return redirect(url_for('login_staff_view'))
     
     #channel = Channel.find_by_cid(cid)
+    chatname = Message.get_name_staffside(cid)
     messages = Message.get_all(cid)
 
     #return render_template('messages.html', messages=messages, channel=channel, uid=uid)
-    return render_template('messages_stylist.html', messages=messages, stid=stid, cid=cid)
+    return render_template('messages_stylist.html', chatname=chatname, messages=messages, stid=stid, cid=cid)
 
 
 
