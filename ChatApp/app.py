@@ -366,7 +366,7 @@ def make_reservation_view(cid):
 
     if request.method == 'POST':
         cuid = session.get('cuid')
-        selected_date = request.form.get('date')
+        selected_date = f"{request.form.get('date')} {request.form.get('time')}"
         Reservation.create(cuid, selected_date, cid)
         message = f"{selected_date}で予約しました！"
         uid = cuid
