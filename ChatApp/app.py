@@ -26,7 +26,7 @@ app.permanent_session_lifetime = timedelta(days=SESSION_DAYS)
 def index():
     cuid = session.get('cuid')
     stid = session.get('stid')
- 
+
     if stid is None:
         return redirect(url_for('main_view'))
     elif cuid is None:
@@ -165,17 +165,26 @@ def login_staff_process():
 # ログアウト
 @app.route('/logout')
 def logout():
-    cuid = session.get('cuid')
-    stid = session.get('stid')
+    # cuid = session.get('cuid')
+    # stid = session.get('stid')
     
-    session.clear()
+    session.pop('cuid', None)
 
-    if stid is None:
-        return redirect(url_for('login_view'))
-    elif cuid is None:
-        return redirect(url_for('login_staff_view'))
-    else:
-        return redirect(url_for('login_view'))
+    return redirect(url_for('login_view'))
+    # if stid is None:
+    #     return redirect(url_for('login_view'))
+    # elif cuid is None:
+    #     return redirect(url_for('login_staff_view'))
+    # else:
+    #     return redirect(url_for('login_view'))
+
+# ログアウト
+@app.route('/logout_staff')
+def logout_staff():
+    
+    session.pop('stid', None)
+
+    return redirect(url_for('login_staff_view'))
 
 
 # ユーザーTOPページの表示
