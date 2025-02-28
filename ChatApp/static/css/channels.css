@@ -10,29 +10,55 @@
 }
 
 .stylists_top_wrapper{
-        display:flex;
-        justify-content: space-between;
-        align-items:center;
-        width:90%;
-        padding:10px 20px;
-        box-sizing: border-box;
-        height: 50px;
-        background-color:var(--white_1)
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    width:90%;
+    padding:10px 20px;
+    box-sizing: border-box;
+    height: 50px;
+    background-color:var(--white_1)
 }
 .channels_syilist_container{
-        width:auto;
-        height:auto;
+        width:90%;
+        height:90%;
         margin:10%;
         box-sizing:border-box;
         flex-direction:column;
         align-items:center;
         display:flex;
         padding:50px;
-        margin:0 auto;
         background-color: var(--white_1); 
         padding-bottom: 100px;
+        justify-content: flex-start;
+         flex-wrap: wrap; 
 }
 
+.channels_sylist_title{
+    display:flex;
+    background-color: var(--white_1); 
+}
+
+.customer_detail{
+    display:flex;
+    height:50px;
+    align-items:center;
+    justify-content: center; 
+    width:250px;
+    background-color:var(--brown);
+    border:1px solid var(--black);
+    padding:5px;
+    color:var(--black);
+    box-sizing: border-box; 
+}
+
+.customer_detail:nth-child(odd) {
+    background-color: var(--brown); 
+}
+
+.customer_detail:nth-child(even) {
+    background-color: var(--brown2); 
+}
 .stylist-info{
     width:100%;
     max-width:1200px;
@@ -83,6 +109,7 @@
     padding:0 10px;
     height:100%;
     display:flex;
+    z-index: 10;
 }
 
 
