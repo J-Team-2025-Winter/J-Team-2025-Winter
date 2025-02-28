@@ -1,16 +1,17 @@
 {% extends 'base.html' %} {% block title %}
+<link rel="stylesheet" href="static\css\reservation.css">
 <title>reservation</title>
 {% endblock %} {% block body %}
 <div>
   <a href="{{ url_for('channels_stylist_view') }}" class="back-button"><span></span></a>
-<div>
+<div class="reservation-container">
     <div>
-      <p>予約一覧</p>
+      <h1>SCHEDULE</h1>
     </div>
-    <div>
+    <div class="reservation-main">
       {% for reservation in reservations %}
-        <p>
-          {{ reservation.customer_name }} {{ reservation.reservation_date }} <br>
+        <p class="reservation_datail">
+          {{ reservation.customer_name }} 様 <br> {{ reservation.reservation_date }} <br>
         </p>
       {% endfor %}
     </div>

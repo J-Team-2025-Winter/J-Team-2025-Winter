@@ -21,8 +21,10 @@
     <div class="channels_syilist_container">
         <div class="channels_sylist_title">
           <h2>お客様一覧</h2>
+        </div>
+           <div class="channnels_stylist_main">
             {% for users in channels_user %}
-              <p><a href="{{ url_for('detail_stylist_channel', cid=users.customers_stylists_id) }}" class="user-name">{{ users.customer_name }}</a></p>
+              <p><a href="{{ url_for('detail_stylist_channel', cid=users.customers_stylists_id) }}" class="customer_detail">{{ users.customer_name }} 様</a></p>
             {% endfor %}
         </div>
     </div>
